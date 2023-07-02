@@ -61,3 +61,8 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# Oculus Plugin
+/Assets/Oculus/
+
+# API Key
+/Assets/EnvKey.*

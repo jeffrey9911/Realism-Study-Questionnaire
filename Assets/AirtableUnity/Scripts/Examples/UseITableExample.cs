@@ -9,6 +9,8 @@ public class UseITableExample : MonoBehaviour
     // Create an IAirtable object
     IAirtable myAirtable;
 
+    IAirtable assetAirtable;
+
     bool isPrinted = false;
 
     private void Start()
@@ -17,7 +19,12 @@ public class UseITableExample : MonoBehaviour
         myAirtable = this.AddComponent<IAirtable>();
 
         // Initializing IAirtable with APIs would also create a local copy of that table (if TRUE)
-        myAirtable.Initialize("", "", "", "", true);
+        myAirtable.Initialize(EnvKey.APIVERSION, EnvKey.APPTOKEN, EnvKey.APIKEY, "QuestionList0", true);
+
+        // Initialize another IAirtable object for getting assets
+        assetAirtable = this.AddComponent<IAirtable>();
+        // Initializing IAirtable with APIs without creating a local copy of that table (if FALSE)
+        assetAirtable.Initialize(EnvKey.APIVERSION, EnvKey.APPTOKEN, EnvKey.APIKEY, EnvKey.Tables.UABList, false);
     }
 
     private void Update()
@@ -26,16 +33,17 @@ public class UseITableExample : MonoBehaviour
         if(myAirtable.isLocalTableAvailable && !isPrinted)
         {
             // use GetField to get the value of a field from a record
-            Debug.Log(myAirtable.LocalTable.GetField("recGROdyRUKClmxSP", "File Owner(s)"));
+            Debug.Log(myAirtable.LocalTable.GetField("0", "ResponseType"));
 
             // Or use row name and column name to get the value of a field from a record
-            Debug.Log(myAirtable.LocalTable.itable["recZnGghs1rwHD7Jz"]["File ID"]);
+            Debug.Log(myAirtable.LocalTable.itable["0"]["Asset(0)"]);
 
-            // Use local table to get certain asset from the internet
-            myAirtable.GetAsset(myAirtable.LocalTable.itable.Keys.FirstOrDefault(), OnResponseGetUAB);
+            Debug.Log(myAirtable.LocalTable.itable["0"]["ResponseConfig"]);
 
             // Use record id to get certain asset from the internet
-            myAirtable.GetAsset("recZnGghs1rwHD7Jz", OnResponseGetUAB);
+            string assetRecordId = myAirtable.LocalTable.itable["0"]["Asset(0)"];
+            assetRecordId = assetRecordId.Replace("[", "").Replace("]", "");
+            assetAirtable.GetAsset(assetRecordId, OnResponseGetUAB);
 
             isPrinted = true;
         }

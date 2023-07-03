@@ -109,8 +109,8 @@ public class UIManager : MonoBehaviour
 
         UISystemMessage("[System]: Survey Versions Loaded!");
 
-        //DataRecorder.Instance.SurveyVersion = "3";
-        //StartSurveyOnClick();
+        DataRecorder.Instance.SurveyVersion = "3";
+        StartSurveyOnClick();
     }
 
     public void StartSurveyOnClick()
@@ -133,7 +133,7 @@ public class UIManager : MonoBehaviour
 
     public void OnQuestionLoaded()
     {
-        UISystemMessage($"[System]: {QuestionManager.Instance.Questions.Count} Questions Loaded!");
+        //UISystemMessage($"[System]: {QuestionManager.Instance.Questions.Count} Questions Loaded!");
 
         IsUiFollowing = true;
 

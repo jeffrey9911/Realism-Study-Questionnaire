@@ -103,7 +103,7 @@ public class DataManager : MonoBehaviour
 
     public void LoadQuestionnaire()
     {
-        PreStudyTable.Initialize(EnvKey.APIVERSION, EnvKey.APPTOKEN, EnvKey.APIKEY, EnvKey.Tables.PreStudyVersion, true);
+        PreStudyTable.Initialize(EnvKey.APIVERSION, EnvKey.APPTOKEN, EnvKey.APIKEY, "PreStudyV" + DataRecorder.Instance.PreStudyID, true);
         MainAsyncThread = new Thread(GetPreStudy);
         MainAsyncThread.Start();
     }
@@ -123,7 +123,7 @@ public class DataManager : MonoBehaviour
 
     private void LoadPostStudy()
     {
-        PostStudyTable.Initialize(EnvKey.APIVERSION, EnvKey.APPTOKEN, EnvKey.APIKEY, EnvKey.Tables.PostStudyVersion, true);
+        PostStudyTable.Initialize(EnvKey.APIVERSION, EnvKey.APPTOKEN, EnvKey.APIKEY, "PostStudyV" + DataRecorder.Instance.PostStudyID, true);
         MainAsyncThread = new Thread(GetPostStudy);
         MainAsyncThread.Start();
     }
@@ -144,7 +144,7 @@ public class DataManager : MonoBehaviour
 
     private void LoadQuestion()
     {
-        QuestionTable.Initialize(EnvKey.APIVERSION, EnvKey.APPTOKEN, EnvKey.APIKEY, "QuestionList" + DataRecorder.Instance.QuestionnaireID, true);
+        QuestionTable.Initialize(EnvKey.APIVERSION, EnvKey.APPTOKEN, EnvKey.APIKEY, "QuestionnaireV" + DataRecorder.Instance.QuestionnaireID, true);
         MainAsyncThread = new Thread(GetQuestion);
         MainAsyncThread.Start();
     }

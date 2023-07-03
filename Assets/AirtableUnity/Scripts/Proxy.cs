@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
 using static UnityWebRequestExtension;
+using System.Text.RegularExpressions;
 
 namespace AirtableUnity.PX
 {
@@ -240,8 +241,6 @@ namespace AirtableUnity.PX
 
                     rs = response;
 
-                    Debug.Log("TEST1: " + response.Message);
-
                     if (recordFound != null)
                         recordToReturn = recordFound;
                 });
@@ -256,8 +255,6 @@ namespace AirtableUnity.PX
             {
                 fieldInd += 10;
                 string subMsg = msg.Substring(fieldInd, msg.Length - fieldInd - 2);
-
-                Debug.Log("TEST: " + subMsg);
 
                 fields = subMsg.Split(',');
             }
@@ -294,14 +291,14 @@ namespace AirtableUnity.PX
             {
                 fieldInd += 10;
                 string subMsg = msg.Substring(fieldInd, msg.Length - fieldInd - 2);
-                
+                subMsg = Regex.Replace(subMsg, @"\[(.*?)\]", match => match.Value.Replace(",", ""));
                 fields = subMsg.Split(",\"");
 
                 foreach (string str in fields)
                 {
                     string basedStr = str.Replace("\"", "");
                     int dataInd = basedStr.IndexOf(":");
-                    
+
                     string key = basedStr.Substring(0, dataInd);
                     string value = basedStr.Substring(dataInd + 1, basedStr.Length - dataInd - 1);
                     fieldDict.Add(key, value);

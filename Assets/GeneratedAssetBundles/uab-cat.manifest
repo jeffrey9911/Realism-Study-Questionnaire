@@ -1,0 +1,31 @@
+ManifestFileVersion: 0
+CRC: 871129692
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: c95d5f7fc27d721e17106079a1b449db
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9203a98c4a3dca5f67928e72fff8f95d
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/AirtableUnity/Prefabs/AssetBundleExample/Cat Prefab.prefab
+Dependencies: []

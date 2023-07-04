@@ -224,6 +224,20 @@ public class QuestionManager : MonoBehaviour
                 break;
         }
 
+        switch (AssetResponseType)
+        {
+            case "Comparison":
+                ObjectSpawner.Instance.SpawnObject(Asset0.Replace("[", "").Replace("]", ""), Asset1.Replace("[", "").Replace("]", ""));
+                break;
+
+            case "Evaluation":
+                ObjectSpawner.Instance.SpawnObject(Asset0.Replace("[", "").Replace("]", ""));
+                break;
+
+            default:
+                break;
+        }
+
         UIManager.Instance.RefreshLayout();
     }
 

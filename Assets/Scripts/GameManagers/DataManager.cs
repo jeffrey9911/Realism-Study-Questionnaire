@@ -18,6 +18,7 @@ public class DataManager : MonoBehaviour
     public IAirtable PreStudyTable;
     public IAirtable PostStudyTable;
     public IAirtable QuestionTable;
+    public IAirtable UABTable;
 
     private void Awake()
     {
@@ -40,10 +41,12 @@ public class DataManager : MonoBehaviour
         PreStudyTable = this.AddComponent<IAirtable>();
         PostStudyTable = this.AddComponent<IAirtable>();
         QuestionTable = this.AddComponent<IAirtable>();
+        UABTable = this.AddComponent<IAirtable>();
 
         ForceSetup.Initialize(EnvKey.APIVERSION, EnvKey.APPTOKEN, EnvKey.APIKEY, EnvKey.Tables.ConfigSetup, true);
         ConfigTable.Initialize(EnvKey.APIVERSION, EnvKey.APPTOKEN, EnvKey.APIKEY, EnvKey.Tables.UnityConfig, true);
         
+        UABTable.Initialize(EnvKey.APIVERSION, EnvKey.APPTOKEN, EnvKey.APIKEY, EnvKey.Tables.UABList, false);
         
         MainAsyncThread = new Thread(GetUnityConfig);
         MainAsyncThread.Start();

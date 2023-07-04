@@ -24,7 +24,11 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private Transform FollowTransform;
 
+    public GameObject QuestionContainer;
+    public ToggleGroup QuestionToggleGroup;
+
     private bool IsUiFollowing = false;
+    private bool IsQuestionPanelTransformed = false;
     private float FollowSpeed = 3f;
 
     private void Awake()
@@ -44,6 +48,7 @@ public class UIManager : MonoBehaviour
     {
         UnityConfigDropdown.onValueChanged.AddListener(OnUnityConfigDDValue);
         SurveyVersionDropdown.onValueChanged.AddListener(OnSurveyVersionDDValue);
+        QuestionPanel.GetComponent<RectTransform>().offsetMax = new Vector2(0f, 0f);
     }
 
     private void Update()
@@ -55,6 +60,18 @@ public class UIManager : MonoBehaviour
             GameUICanvas.transform.position = Vector3.Lerp(GameUICanvas.transform.position, FollowTransform.position, Time.deltaTime * FollowSpeed);
             GameUICanvas.transform.rotation = Quaternion.Lerp(GameUICanvas.transform.rotation, FollowTransform.rotation, Time.deltaTime * FollowSpeed);
             GameUICanvas.transform.localScale = Vector3.Lerp(GameUICanvas.transform.localScale, FollowTransform.localScale, Time.deltaTime * FollowSpeed);
+
+            if (!IsQuestionPanelTransformed)
+            {
+                QuestionPanel.GetComponent<RectTransform>().offsetMax = Vector2.Lerp(QuestionPanel.GetComponent<RectTransform>().offsetMax,
+                    new Vector2(0f, 40f), Time.deltaTime * FollowSpeed);
+
+                if(QuestionPanel.GetComponent<RectTransform>().offsetMax.y >= 39.9f)
+                {
+                    QuestionPanel.GetComponent<RectTransform>().offsetMax = new Vector2(0f, 40f);
+                    IsQuestionPanelTransformed = true;
+                }
+            }
         }
 
         
@@ -109,8 +126,8 @@ public class UIManager : MonoBehaviour
 
         UISystemMessage("[System]: Survey Versions Loaded!");
 
-        DataRecorder.Instance.SurveyVersion = "3";
-        StartSurveyOnClick();
+        //DataRecorder.Instance.SurveyVersion = "3";
+        //StartSurveyOnClick();
     }
 
     public void StartSurveyOnClick()
@@ -131,10 +148,35 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void ClearQuestion()
+    {
+        while (QuestionContainer.transform.childCount > 0)
+        {
+            DestroyImmediate(QuestionContainer.transform.GetChild(0).gameObject);
+        }
+    }
+
+    public void RefreshLayout()
+    {
+        RebuildLayoutGroups(QuestionContainer.transform);
+    }
+
+    private void RebuildLayoutGroups(Transform parent)
+    {
+        LayoutGroup layoutGroup = parent.GetComponent<LayoutGroup>();
+        if(layoutGroup != null)
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(layoutGroup.GetComponent<RectTransform>());
+        }
+
+        for(int i = 0; i < parent.childCount; i++)
+        {
+            RebuildLayoutGroups(parent.GetChild(i));
+        }
+    }
+
     public void OnQuestionLoaded()
     {
-        //UISystemMessage($"[System]: {QuestionManager.Instance.Questions.Count} Questions Loaded!");
-
         IsUiFollowing = true;
 
         SurveyConfigPanel.SetActive(false);

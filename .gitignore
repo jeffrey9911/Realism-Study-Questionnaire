@@ -66,3 +66,6 @@ crashlytics-build.properties
 
 # API Key
 /Assets/EnvKey.*
+
+# Asset bundles
+/Assets/GeneratedAssetBundles/

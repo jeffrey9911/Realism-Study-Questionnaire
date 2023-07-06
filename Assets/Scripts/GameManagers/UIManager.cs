@@ -126,7 +126,7 @@ public class UIManager : MonoBehaviour
 
         UISystemMessage("[System]: Survey Versions Loaded!");
 
-        //DataRecorder.Instance.SurveyVersion = "3";
+        //DataRecorder.Instance.SurveyVersion = "2";
         //StartSurveyOnClick();
     }
 

@@ -29,6 +29,8 @@ public class ObjectSpawner : MonoBehaviour
     private string Asset0rid;
     private string Asset1rid;
 
+    private string CurrentMode = "";
+
     private void Awake()
     {
         if(Instance == null)
@@ -164,7 +166,7 @@ public class ObjectSpawner : MonoBehaviour
 
     public void SpawnObject(string objrid)
     {
-        if(objrid != Asset0rid)
+        if(objrid != Asset0rid && CurrentMode != "Evaluation")
         {
             Destroy(Asset0);
             Destroy(Asset1);
@@ -177,6 +179,8 @@ public class ObjectSpawner : MonoBehaviour
                     OnSpawnObject(gobj, 0);
                 }
                 );
+
+            CurrentMode = "Evaluation";
         }
 
         isEvaluation = true;
@@ -185,7 +189,7 @@ public class ObjectSpawner : MonoBehaviour
 
     public void SpawnObject(string obj0rid, string obj1rid)
     {
-        if(obj0rid != Asset0rid)
+        if(obj0rid != Asset0rid && CurrentMode != "Comparison")
         {
             Destroy(Asset0);
 
@@ -197,6 +201,8 @@ public class ObjectSpawner : MonoBehaviour
                     OnSpawnObject(gobj, 1);
                 }
                 );
+
+            CurrentMode = "Comparison";
         }
 
         if(obj1rid != Asset1rid)

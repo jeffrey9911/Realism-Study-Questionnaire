@@ -21,6 +21,7 @@ public class QuestionManager : MonoBehaviour
     private GameObject Slider;
     private GameObject TextInput;
     private GameObject Toggle;
+    private GameObject advSlider;
 
     private bool isQuestionnaireFinished = false;
 
@@ -43,6 +44,7 @@ public class QuestionManager : MonoBehaviour
         Slider = Resources.Load<GameObject>("Prefabs/Slider");
         TextInput = Resources.Load<GameObject>("Prefabs/TextInput");
         Toggle = Resources.Load<GameObject>("Prefabs/Toggle");
+        advSlider = Resources.Load<GameObject>("Prefabs/advSlider");
     }
 
     public void OnQuestionLoaded()
@@ -57,7 +59,7 @@ public class QuestionManager : MonoBehaviour
         UIManager.Instance.OnQuestionLoaded();
     }
 
-    public void LoadQuestion()
+    public void LoadQuestion(int counter = 0)
     {
         switch (CurrentStudy)
         {
@@ -96,7 +98,8 @@ public class QuestionManager : MonoBehaviour
                 SetQuestions(
                     DataManager.Instance.PreStudyTable.LocalTable.itable[CurrentQuestionIndex.ToString()]["ResponseType"],
                     DataManager.Instance.PreStudyTable.LocalTable.itable[CurrentQuestionIndex.ToString()]["ResponseConfig"],
-                    DataManager.Instance.PreStudyTable.LocalTable.itable[CurrentQuestionIndex.ToString()]["QuestionString"]
+                    DataManager.Instance.PreStudyTable.LocalTable.itable[CurrentQuestionIndex.ToString()]["QuestionString"],
+                    null, null, null, 0
                     );
                 break;
 
@@ -120,14 +123,15 @@ public class QuestionManager : MonoBehaviour
                         asset0 = DataManager.Instance.QuestionTable.LocalTable.itable[CurrentQuestionIndex.ToString()]["Asset(0)"];
                     }
                 }
-                SetQuestions(responseType, responseConfig, questionString, assetResponseType, asset0, asset1);
+                SetQuestions(responseType, responseConfig, questionString, assetResponseType, asset0, asset1, counter);
                 break;
 
             case "PostStudy":
                 SetQuestions(
                     DataManager.Instance.PostStudyTable.LocalTable.itable[CurrentQuestionIndex.ToString()]["ResponseType"],
                     DataManager.Instance.PostStudyTable.LocalTable.itable[CurrentQuestionIndex.ToString()]["ResponseConfig"],
-                    DataManager.Instance.PostStudyTable.LocalTable.itable[CurrentQuestionIndex.ToString()]["QuestionString"]
+                    DataManager.Instance.PostStudyTable.LocalTable.itable[CurrentQuestionIndex.ToString()]["QuestionString"],
+                    null, null, null, 0
                     );
                 break;
 
@@ -136,13 +140,45 @@ public class QuestionManager : MonoBehaviour
         }
     }
 
-    private void SetQuestions(string ResponseType, string ResponseConfig, string QuestionString, string AssetResponseType = null, string Asset0 = null, string Asset1 = null)
+    private void SetQuestions(string ResponseType, string ResponseConfig, string QuestionString, string AssetResponseType = null, string Asset0 = null, string Asset1 = null, int counter = 0)
     {
         UIManager.Instance.QuestionTitle.text = $"{CurrentStudy}: Question#{CurrentQuestionIndex}";
         UIManager.Instance.Question.text = QuestionString;
 
         switch (ResponseType)
         {
+            case "GodSpeedSlider":
+                if(counter == 0) UIManager.Instance.ClearQuestion();
+                if(counter < 4)
+                {
+                    List<string> godSpeedConfigs = GetQuestionConfig(ResponseConfig);
+
+                    GameObject godSpeedVertical = GameObject.Find("VerticalContainer(Clone)");
+                    if (godSpeedVertical == null) godSpeedVertical = Instantiate(VerticalContainer, UIManager.Instance.QuestionContainer.transform);
+
+                    GameObject godSpeedSlider = Instantiate(advSlider, godSpeedVertical.transform);
+
+                    QSComponent qsComponent = godSpeedSlider.GetComponent<QSComponent>();
+                    qsComponent.StudyType = CurrentStudy;
+                    qsComponent.QuestionID = CurrentQuestionIndex.ToString();
+                    qsComponent.SetSlider(0, 5, godSpeedConfigs[0], godSpeedConfigs[1]);
+
+                    CurrentQuestionIndex++;
+
+                    if(CurrentQuestionIndex >= QuestionnaireCount)
+                    {
+                        CurrentQuestionIndex -= 1;
+                        break;
+                    }
+
+                    LoadQuestion(counter + 1);
+                }
+                else
+                {
+                    CurrentQuestionIndex -= 1;
+                }
+                break;
+
             case "SingleSelect":
                 UIManager.Instance.ClearQuestion();
                 List<string> singleConfigs = GetQuestionConfig(ResponseConfig);
@@ -224,18 +260,21 @@ public class QuestionManager : MonoBehaviour
                 break;
         }
 
-        switch (AssetResponseType)
+        if(counter < 4)
         {
-            case "Comparison":
-                ObjectSpawner.Instance.SpawnObject(Asset0.Replace("[", "").Replace("]", ""), Asset1.Replace("[", "").Replace("]", ""));
-                break;
+            switch (AssetResponseType)
+            {
+                case "Comparison":
+                    ObjectSpawner.Instance.SpawnObject(Asset0.Replace("[", "").Replace("]", ""), Asset1.Replace("[", "").Replace("]", ""));
+                    break;
 
-            case "Evaluation":
-                ObjectSpawner.Instance.SpawnObject(Asset0.Replace("[", "").Replace("]", ""));
-                break;
+                case "Evaluation":
+                    ObjectSpawner.Instance.SpawnObject(Asset0.Replace("[", "").Replace("]", ""));
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+            }
         }
 
         UIManager.Instance.RefreshLayout();

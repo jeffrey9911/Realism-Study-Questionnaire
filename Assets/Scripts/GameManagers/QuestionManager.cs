@@ -22,6 +22,7 @@ public class QuestionManager : MonoBehaviour
     private GameObject TextInput;
     private GameObject Toggle;
     private GameObject advSlider;
+    private GameObject advColorSlider;
 
     private bool isQuestionnaireFinished = false;
 
@@ -42,9 +43,10 @@ public class QuestionManager : MonoBehaviour
     {
         VerticalContainer = Resources.Load<GameObject>("Prefabs/VerticalContainer");
         Slider = Resources.Load<GameObject>("Prefabs/Slider");
-        TextInput = Resources.Load<GameObject>("Prefabs/TextInput");
+        TextInput = Resources.Load<GameObject>("Prefabs/advTextInput");
         Toggle = Resources.Load<GameObject>("Prefabs/Toggle");
         advSlider = Resources.Load<GameObject>("Prefabs/advSlider");
+        advColorSlider = Resources.Load<GameObject>("Prefabs/advColorSlider");
     }
 
     public void OnQuestionLoaded()
@@ -227,7 +229,8 @@ public class QuestionManager : MonoBehaviour
                 List<string> SliderConfigs = GetQuestionConfig(ResponseConfig);
 
                 GameObject sliderVertical = Instantiate(VerticalContainer, UIManager.Instance.QuestionContainer.transform);
-                GameObject slider = Instantiate(Slider, sliderVertical.transform);
+                GameObject colorSlider = Instantiate(advColorSlider, sliderVertical.transform);
+                GameObject slider = colorSlider.transform.Find("Slider").gameObject;
 
                 foreach(string sliderConfig in SliderConfigs)
                 {

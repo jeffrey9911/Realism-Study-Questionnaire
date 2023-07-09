@@ -55,7 +55,19 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        //OVRInput.Update();
+        if (QuestionManager.Instance.isQuestionnaireFinished)
+        {
+            IsUiFollowing = false;
+
+            Vector3 homePos = new Vector3(0f, 1.8f, 2.5f);
+            Vector3 homeRot = new Vector3(0f, 0f, 0f);
+            Vector3 homeSca = new Vector3(0.01f, 0.01f, 0.01f);
+
+            GameUICanvas.transform.position = Vector3.Lerp(GameUICanvas.transform.position, homePos, Time.deltaTime);
+            GameUICanvas.transform.rotation = Quaternion.Lerp(GameUICanvas.transform.rotation, Quaternion.Euler(homeRot), Time.deltaTime);
+            GameUICanvas.transform.localScale = Vector3.Lerp(GameUICanvas.transform.localScale, homeSca, Time.deltaTime);
+        }
+
         if(IsUiFollowing)
         {
             if (OVRInput.GetDown(OVRInput.Button.Start)) GameUICanvas.SetActive(!GameUICanvas.activeSelf);

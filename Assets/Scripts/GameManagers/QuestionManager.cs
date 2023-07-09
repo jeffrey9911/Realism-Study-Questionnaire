@@ -23,7 +23,7 @@ public class QuestionManager : MonoBehaviour
     private GameObject advSlider; // advanced slider
     private GameObject advColorSlider; // advanced color slider
 
-    private bool isQuestionnaireFinished = false;
+    public bool isQuestionnaireFinished = false;
 
     private void Awake()
     {
@@ -83,7 +83,7 @@ public class QuestionManager : MonoBehaviour
                 if(CurrentQuestionIndex >= PostStudyQuestionCount)
                 {
                     isQuestionnaireFinished = true;
-                    UIManager.Instance.UISystemMessage("[System]: Questionnaire Finished!");
+                    UIManager.Instance.UISystemMessage("[System]: Survey Finished!");
                     UIManager.Instance.FinishPanel.SetActive(true);
                     DataRecorder.Instance.UploadRecords();
                     return;

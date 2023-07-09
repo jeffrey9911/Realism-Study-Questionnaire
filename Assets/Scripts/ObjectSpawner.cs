@@ -61,6 +61,51 @@ public class ObjectSpawner : MonoBehaviour
 
     private void Update()
     {
+        if(QuestionManager.Instance.isQuestionnaireFinished)
+        {
+            isComparison = false;
+            isEvaluation = false;
+
+            Destroy(Asset0);
+            Destroy(Asset1);
+
+            BlueBase.transform.position = Vector3.Lerp(
+                BlueBase.transform.position,
+                new Vector3(BlueBase.transform.position.x, 0f, BlueBase.transform.position.z),
+                Time.deltaTime
+                );
+
+            BlueBase.GetComponent<MeshRenderer>().material.color = Color.Lerp(
+                 BlueBase.GetComponent<MeshRenderer>().material.color,
+                 ORIGIN,
+                 Time.deltaTime
+                 );
+
+            RedBase.transform.position = Vector3.Lerp(
+                RedBase.transform.position,
+                new Vector3(RedBase.transform.position.x, 0f, RedBase.transform.position.z),
+                Time.deltaTime
+                );
+
+            RedBase.GetComponent<MeshRenderer>().material.color = Color.Lerp(
+                 RedBase.GetComponent<MeshRenderer>().material.color,
+                 ORIGIN,
+                 Time.deltaTime
+                 );
+
+            CentreBase.transform.position = Vector3.Lerp(
+                CentreBase.transform.position,
+                new Vector3(CentreBase.transform.position.x, 0f, CentreBase.transform.position.z),
+                Time.deltaTime
+                );
+
+            CentreBase.GetComponent<MeshRenderer>().material.color = Color.Lerp(
+                 CentreBase.GetComponent<MeshRenderer>().material.color,
+                 ORIGIN,
+                 Time.deltaTime
+                 );
+        }
+
         if(isComparison)
         {
             BlueBase.transform.position = Vector3.Lerp(
@@ -166,7 +211,7 @@ public class ObjectSpawner : MonoBehaviour
 
     public void SpawnObject(string objrid)
     {
-        if(objrid != Asset0rid && CurrentMode != "Evaluation")
+        if(objrid != Asset0rid || CurrentMode != "Evaluation")
         {
             Destroy(Asset0);
             Destroy(Asset1);
@@ -189,7 +234,8 @@ public class ObjectSpawner : MonoBehaviour
 
     public void SpawnObject(string obj0rid, string obj1rid)
     {
-        if(obj0rid != Asset0rid && CurrentMode != "Comparison")
+        bool isSwitchMode = CurrentMode != "Comparison";
+        if(obj0rid != Asset0rid || isSwitchMode)
         {
             Destroy(Asset0);
 
@@ -205,7 +251,7 @@ public class ObjectSpawner : MonoBehaviour
             CurrentMode = "Comparison";
         }
 
-        if(obj1rid != Asset1rid)
+        if(obj1rid != Asset1rid || isSwitchMode)
         {
             Destroy(Asset1);
 

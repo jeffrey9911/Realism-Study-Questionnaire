@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Threading;
 using Unity.VisualScripting;
 using OVRSimpleJSON;
+using AirtableUnity.PX.Model;
 
 public class DataManager : MonoBehaviour
 {
@@ -78,6 +79,14 @@ public class DataManager : MonoBehaviour
                         {
                             DataRecorder.Instance.UnityConfigVersion = forceSetup.ToString();
                             UIManager.Instance.SetupUnityConfig(false);
+                            return;
+                        }
+
+                        if(forceSetup == -2)
+                        {
+                            UIManager.Instance.FinishPanel.SetActive(true);
+                            QuestionManager.Instance.isQuestionnaireFinished = true;
+                            UIManager.Instance.UISystemMessage("[System]: Survey temporarily closed. Please await further notice.");
                             return;
                         }
                     }
@@ -173,6 +182,7 @@ public class DataManager : MonoBehaviour
 
     public void UploadResponse(string prestudyR, string questionR, string poststudyR)
     {
+        UIManager.Instance.UISystemMessage("[System]: Survey Finished! Uploading Your Response... Do Not Quit");
         ResponseTable.Initialize(EnvKey.APIVERSION, EnvKey.APPTOKEN, EnvKey.APIKEY, EnvKey.Tables.ResponseVersion, false);
         string newdata = $"{{\"fields\":{{\"$Participant ID\":\"{DataRecorder.Instance.ParicipantID}" +
             $"\",\"PreStudy ID\":\"{DataRecorder.Instance.PreStudyID}" +
@@ -183,7 +193,12 @@ public class DataManager : MonoBehaviour
             $"\",\"PostStudy Response\":\"{poststudyR}" +
             $"\"}}}}";
 
-        ResponseTable.CreateRecord(newdata, null);
+        ResponseTable.CreateRecord(newdata, OnCreateFinish);
+    }
+
+    private void OnCreateFinish(BaseRecord<BaseField> record)
+    {
+        UIManager.Instance.UISystemMessage("[System]: Response Uploaded! Thanks for participating!");
     }
 
 

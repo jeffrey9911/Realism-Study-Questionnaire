@@ -69,3 +69,4 @@ crashlytics-build.properties
 
 # Asset bundles
 /Assets/GeneratedAssetBundles/
+/Assets/AssetBundlePrefabs/

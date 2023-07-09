@@ -24,4 +24,88 @@ public class DataRecorder : MonoBehaviour
     public string PreStudyID;
     public string PostStudyID;
     public string QuestionnaireID;
+
+    public string ParicipantID;
+
+    public List<string> PreStudyResponse = new List<string>();
+    public List<string> QuestionnaireResponse = new List<string>();
+    public List<string> PostStudyResponse = new List<string>();
+
+    public void RecordQuestion(string studyName, string responseString)
+    {
+        switch (studyName)
+        {
+            case "PreStudy":
+                PreStudyResponse.Add(responseString);
+                break;
+
+            case "Questionnaire":
+                QuestionnaireResponse.Add(responseString);
+                break;
+
+            case "PostStudy":
+                PostStudyResponse.Add(responseString);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    public void DisplayRecords()
+    {
+        Debug.Log($"Unity Config Version: {UnityConfigVersion}\n" +
+            $"Survey Version: {SurveyVersion}\n" +
+            $"PreStudyID: {PreStudyID}\n" +
+            $"QuestionnaireID: {QuestionnaireID}\n" +
+            $"PostStudyID: {PostStudyID}\n" +
+            $"================== Pre-Study ==================\n");
+        foreach (string response in PreStudyResponse)
+        {
+            Debug.Log(response);
+        }
+
+        Debug.Log($"================== Questionnaire ==================\n");
+        foreach (string response in QuestionnaireResponse)
+        {
+            Debug.Log(response);
+        }
+
+        Debug.Log($"================== Post-Study ==================\n");
+        foreach (string response in PostStudyResponse)
+        {
+            Debug.Log(response);
+        }
+    }
+
+    public void UploadRecords()
+    {
+        string preR = "{\\n";
+        string quesR = "{\\n";
+        string postR = "{\\n";
+
+        foreach (string response in PreStudyResponse)
+        {
+            preR += response;
+        }
+        preR += "}";
+
+        foreach (string response in QuestionnaireResponse)
+        {
+            quesR += response;
+        }
+        quesR += "}";
+
+        foreach (string response in PostStudyResponse)
+        {
+            postR += response;
+        }
+        postR += "}";
+
+        Debug.Log(preR);
+        Debug.Log(quesR);
+        Debug.Log(postR);
+
+        DataManager.Instance.UploadResponse(preR, quesR, postR);
+    }
 }

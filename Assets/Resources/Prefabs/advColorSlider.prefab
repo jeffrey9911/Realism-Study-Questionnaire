@@ -622,12 +622,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StudyType: 
   QuestionID: 
-  ResponseType: 0
+  ResponseType: 1
   Slider: {fileID: 7942579256598203196}
   LeftText: {fileID: 0}
   RightText: {fileID: 0}
   HandleText: {fileID: 7639536788416611957}
   InputField: {fileID: 0}
+  toggle: {fileID: 0}
+  toggleText: {fileID: 0}
 --- !u!1 &8318057658981592610
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,6 +19,7 @@ public class DataManager : MonoBehaviour
     public IAirtable PostStudyTable;
     public IAirtable QuestionTable;
     public IAirtable UABTable;
+    public IAirtable ResponseTable;
 
     private void Awake()
     {
@@ -42,6 +43,8 @@ public class DataManager : MonoBehaviour
         PostStudyTable = this.AddComponent<IAirtable>();
         QuestionTable = this.AddComponent<IAirtable>();
         UABTable = this.AddComponent<IAirtable>();
+        ResponseTable = this.AddComponent<IAirtable>();
+
 
         ForceSetup.Initialize(EnvKey.APIVERSION, EnvKey.APPTOKEN, EnvKey.APIKEY, EnvKey.Tables.ConfigSetup, true);
         ConfigTable.Initialize(EnvKey.APIVERSION, EnvKey.APPTOKEN, EnvKey.APIKEY, EnvKey.Tables.UnityConfig, true);
@@ -166,6 +169,21 @@ public class DataManager : MonoBehaviour
             Destroy(DataManager.Instance.ConfigTable);
             Destroy(DataManager.Instance.SurveyVersionTable);
         }, null);
+    }
+
+    public void UploadResponse(string prestudyR, string questionR, string poststudyR)
+    {
+        ResponseTable.Initialize(EnvKey.APIVERSION, EnvKey.APPTOKEN, EnvKey.APIKEY, EnvKey.Tables.ResponseVersion, false);
+        string newdata = $"{{\"fields\":{{\"$Participant ID\":\"{DataRecorder.Instance.ParicipantID}" +
+            $"\",\"PreStudy ID\":\"{DataRecorder.Instance.PreStudyID}" +
+            $"\",\"PreStudy Response\":\"{prestudyR}" +
+            $"\",\"Questionnaire ID\":\"{DataRecorder.Instance.QuestionnaireID}" +
+            $"\",\"Questionnaire Response\":\"{questionR}" +
+            $"\",\"PostStudy ID\":\"{DataRecorder.Instance.PostStudyID}" +
+            $"\",\"PostStudy Response\":\"{poststudyR}" +
+            $"\"}}}}";
+
+        ResponseTable.CreateRecord(newdata, null);
     }
 
 

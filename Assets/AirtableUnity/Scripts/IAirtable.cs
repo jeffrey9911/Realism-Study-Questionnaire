@@ -76,7 +76,7 @@ public class IAirtable : MonoBehaviour
     /// <typeparam name="T"></typeparam>
     /// <param name="newData"></param>
     /// <param name="callback"></param>
-    public void CreateRecord<T>(string newData, Action<BaseRecord<T>> callback)
+    public void CreateRecord(string newData, Action<BaseRecord<BaseField>> callback)
     {
         SelfCheck();
         StartCoroutine(CreateRecordCo(newData, callback));
@@ -87,17 +87,8 @@ public class IAirtable : MonoBehaviour
 
         yield return StartCoroutine(AirtableUnity.PX.Proxy.CreateRecordCo<T>(TableName, newData, (createdRecord) =>
         {
-            OnCreateResponseFinish(createdRecord);
             callback?.Invoke(createdRecord);
         }));
-    }
-
-    private static void OnCreateResponseFinish<T>(BaseRecord<T> record)
-    {
-        var msg = "record id: " + record?.id + "\n";
-        msg += "created at: " + record?.createdTime;
-
-        Debug.Log("[Airtable Unity] - Create Record: " + "\n" + msg);
     }
 
 

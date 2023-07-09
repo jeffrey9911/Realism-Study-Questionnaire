@@ -18,11 +18,10 @@ public class QuestionManager : MonoBehaviour
     public int CurrentQuestionIndex = 0;
 
     private GameObject VerticalContainer;
-    private GameObject Slider;
-    private GameObject TextInput;
-    private GameObject Toggle;
-    private GameObject advSlider;
-    private GameObject advColorSlider;
+    private GameObject advTextInput; // advanced text input
+    private GameObject advToggle; // advanced toggle
+    private GameObject advSlider; // advanced slider
+    private GameObject advColorSlider; // advanced color slider
 
     private bool isQuestionnaireFinished = false;
 
@@ -42,9 +41,8 @@ public class QuestionManager : MonoBehaviour
     private void Start()
     {
         VerticalContainer = Resources.Load<GameObject>("Prefabs/VerticalContainer");
-        Slider = Resources.Load<GameObject>("Prefabs/Slider");
-        TextInput = Resources.Load<GameObject>("Prefabs/advTextInput");
-        Toggle = Resources.Load<GameObject>("Prefabs/Toggle");
+        advTextInput = Resources.Load<GameObject>("Prefabs/advTextInput");
+        advToggle = Resources.Load<GameObject>("Prefabs/advToggle");
         advSlider = Resources.Load<GameObject>("Prefabs/advSlider");
         advColorSlider = Resources.Load<GameObject>("Prefabs/advColorSlider");
     }
@@ -86,6 +84,8 @@ public class QuestionManager : MonoBehaviour
                 {
                     isQuestionnaireFinished = true;
                     UIManager.Instance.UISystemMessage("[System]: Questionnaire Finished!");
+                    UIManager.Instance.FinishPanel.SetActive(true);
+                    DataRecorder.Instance.UploadRecords();
                     return;
                 }
                 break;
@@ -192,9 +192,14 @@ public class QuestionManager : MonoBehaviour
 
                     for (int j = 0; j < 4; j++)
                     {
-                        GameObject selection = Instantiate(Toggle, vertical.transform);
+                        GameObject selection = Instantiate(advToggle, vertical.transform);
                         selection.GetComponent<Toggle>().group = UIManager.Instance.QuestionToggleGroup;
                         selection.transform.Find("Label").GetComponent<TMP_Text>().text = singleConfigs[singleConfigIndex];
+
+                        QSComponent tgQsComponent = selection.GetComponent<QSComponent>();
+                        tgQsComponent.StudyType = CurrentStudy;
+                        tgQsComponent.QuestionID = CurrentQuestionIndex.ToString();
+                        //tgQsComponent.toggleMode = ToggleMode.Single;
 
                         singleConfigIndex++;
 
@@ -214,8 +219,13 @@ public class QuestionManager : MonoBehaviour
 
                     for (int j = 0; j < 4; j++)
                     {
-                        GameObject selection = Instantiate(Toggle, vertical.transform);
+                        GameObject selection = Instantiate(advToggle, vertical.transform);
                         selection.transform.Find("Label").GetComponent<TMP_Text>().text = multiConfigs[multiConfigIndex];
+
+                        QSComponent tgQsComponent = selection.GetComponent<QSComponent>();
+                        tgQsComponent.StudyType = CurrentStudy;
+                        tgQsComponent.QuestionID = CurrentQuestionIndex.ToString();
+                        //tgQsComponent.toggleMode = ToggleMode.Multiple;
 
                         multiConfigIndex++;
 
@@ -230,6 +240,11 @@ public class QuestionManager : MonoBehaviour
 
                 GameObject sliderVertical = Instantiate(VerticalContainer, UIManager.Instance.QuestionContainer.transform);
                 GameObject colorSlider = Instantiate(advColorSlider, sliderVertical.transform);
+
+                QSComponent csqsComponent = colorSlider.GetComponent<QSComponent>();
+                csqsComponent.StudyType = CurrentStudy;
+                csqsComponent.QuestionID = CurrentQuestionIndex.ToString();
+
                 GameObject slider = colorSlider.transform.Find("Slider").gameObject;
 
                 foreach(string sliderConfig in SliderConfigs)
@@ -256,7 +271,10 @@ public class QuestionManager : MonoBehaviour
                 UIManager.Instance.ClearQuestion();
                 
                 GameObject inputVertical = Instantiate(VerticalContainer, UIManager.Instance.QuestionContainer.transform);
-                GameObject input = Instantiate(TextInput, inputVertical.transform);
+                GameObject input = Instantiate(advTextInput, inputVertical.transform);
+                QSComponent textQsComponent = input.GetComponent<QSComponent>();
+                textQsComponent.StudyType = CurrentStudy;
+                textQsComponent.QuestionID = CurrentQuestionIndex.ToString();
                 break;
 
             default:
@@ -297,5 +315,79 @@ public class QuestionManager : MonoBehaviour
         }
 
         return QuestionConfig;
+    }
+
+
+    public void RecordCurrentQuestion()
+    {
+        List<QSComponent> qsComponents = GetQSComponent(UIManager.Instance.QuestionContainer.transform);
+
+        string responseString = "";
+
+        bool isToggleMode = false;
+
+        for(int i = 0; i < qsComponents.Count; i++)
+        {
+            switch (qsComponents[i].ResponseType)
+            {
+                case ResponseMode.Slider:
+                    responseString += $"{qsComponents[i].QuestionID}:{qsComponents[i].GetSliderValue()}\\n";
+                    break;
+                case ResponseMode.ColorSlider:
+                    responseString += $"{qsComponents[i].QuestionID}:{qsComponents[i].GetSliderValue()}\\n";
+                    break;
+                case ResponseMode.Toggle:
+                    if (i == 0)
+                    {
+                        responseString += $"{qsComponents[i].QuestionID}:";
+                    }
+
+                    if (qsComponents[i].isToggled)
+                    {
+                        responseString += $"{qsComponents[i].GetToggleText()},";
+                    }
+
+                    isToggleMode = true;
+                    break;
+                case ResponseMode.Text:
+                    if(CurrentStudy == "PreStudy" && CurrentQuestionIndex == 0)
+                    {
+                        DataRecorder.Instance.ParicipantID = qsComponents[i].GetText();
+                    }
+                    responseString += $"{qsComponents[i].QuestionID}:{qsComponents[i].GetText()}\\n";
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+        if(isToggleMode)
+        {
+            if (responseString.EndsWith(",")) responseString = responseString.Remove(responseString.Length - 1);
+
+            responseString += "\\n";
+        }
+
+        DataRecorder.Instance.RecordQuestion(CurrentStudy, responseString);
+    }
+
+    private List<QSComponent> GetQSComponent(Transform parent, List<QSComponent> qsComponents = null)
+    {
+        if(qsComponents == null) qsComponents = new List<QSComponent>();
+
+        foreach (Transform child in parent)
+        {
+            QSComponent qsComponent = null;
+
+            if(child.TryGetComponent<QSComponent>(out qsComponent))
+            {
+                qsComponents.Add(qsComponent);
+            }
+
+            GetQSComponent(child, qsComponents);
+        }
+
+        return qsComponents;
     }
 }

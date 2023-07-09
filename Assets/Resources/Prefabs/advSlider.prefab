@@ -717,6 +717,9 @@ MonoBehaviour:
   LeftText: {fileID: 8837364459579828172}
   RightText: {fileID: 1708789151118419331}
   HandleText: {fileID: 7639536788416611957}
+  InputField: {fileID: 0}
+  toggle: {fileID: 0}
+  toggleText: {fileID: 0}
 --- !u!1 &8318057658981592610
 GameObject:
   m_ObjectHideFlags: 0

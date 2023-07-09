@@ -22,6 +22,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] public TMP_Text QuestionTitle;
     [SerializeField] public TMP_Text Question;
 
+    [SerializeField] public GameObject FinishPanel;
+
     [SerializeField] private Transform FollowTransform;
 
     public GameObject QuestionContainer;
@@ -185,8 +187,10 @@ public class UIManager : MonoBehaviour
         QuestionManager.Instance.LoadQuestion();
     }
 
+    [ContextMenu("Next Question")]
     public void NextQuestionOnClick()
     {
+        QuestionManager.Instance.RecordCurrentQuestion();
         QuestionManager.Instance.CurrentQuestionIndex++;
         QuestionManager.Instance.LoadQuestion();
     }

@@ -12,7 +12,7 @@ public class UseIAirtableExample : MonoBehaviour
     private void Awake()
     {
         myAirTable = this.AddComponent<IAirtable>();
-        myAirTable.Initialize("", "", "", "", true);
+        myAirTable.Initialize("v0", "apptpwKwOEJtQypv7", "keyBWmSRLypBsJUvo", "ResponseVersion", false);
 
     }
 
@@ -38,6 +38,13 @@ public class UseIAirtableExample : MonoBehaviour
     {
         // Example of getting all records id from a table, callback will return a list of record ids
         myAirTable.GetAllRecords(OnResponseGetRecords);
+    }
+
+    [ContextMenu("Create Records")]
+    public void CreateRecords()
+    {
+        string stringToCreate = "{\"fields\":{\"$Participant ID\":\"TEST RESPONSE2\",\"PreStudy ID\":\"123\",\"PreStudy Response\":\"[this is a test response]\",\"Questionnaire ID\":\"333\",\"Questionnaire Response\":\"[test test test]\",\"PostStudy ID\":\"888\",\"PostStudy Response\":\"hahahaha test\"}}";
+        myAirTable.CreateRecord(stringToCreate, null);
     }
 
     // Callback functions

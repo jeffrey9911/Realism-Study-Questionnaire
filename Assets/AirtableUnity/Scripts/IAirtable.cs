@@ -205,7 +205,7 @@ public class IAirtable : MonoBehaviour
         if (record.ContainsKey("File ID"))
         {
             string fileId = record["File ID"];
-            string objUrl = $"https://drive.google.com/u/0/uc?id={fileId}&export=download";
+            string objUrl = $"https://www.googleapis.com/drive/v3/files/{fileId}?alt=media&key={EnvKey.GOOGLE_APIKEY}";
 
             StartCoroutine(GetAssetBundle(objUrl, fileId, callback));
         }

@@ -26,7 +26,6 @@ public class UserController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UIManager.Instance.UISystemMessage($"{this.transform.position.x}, {this.transform.position.y}, {this.transform.position.z}");
         if (IsResetUser)
         {
             this.GetComponent<CharacterController>().enabled = false;
@@ -45,3 +44,7 @@ public class UserController : MonoBehaviour
         }
     }
 }
+
+
+
+

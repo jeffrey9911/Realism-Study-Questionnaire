@@ -67,9 +67,13 @@ public class MeshSequenceLoader : MonoBehaviour
 
                 string materialName = $"mat_{i.ToString($"D{TextureIndexDigits}")}";
 
+#if UNITY_EDITOR
+
                 AssetDatabase.CreateAsset(material, $"Assets\\Resources\\{FolderBasePath}{materialName}.mat");
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
+
+#endif
 
                 Material loadedMaterial = Resources.Load<Material>(FolderBasePath + materialName);
 

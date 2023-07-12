@@ -69,4 +69,9 @@ crashlytics-build.properties
 
 # Asset bundles
 /Assets/GeneratedAssetBundles/
+/Assets/GeneratedAssetBundles/*.meta
 /Assets/AssetBundlePrefabs/
+
+# i Mesh Sequence
+/Assets/Resources/IMeshSequence/
+/Assets/Resources/IMeshSequence/*.meta

@@ -213,6 +213,7 @@ public class ObjectSpawner : MonoBehaviour
     {
         if(objrid != Asset0rid || CurrentMode != "Evaluation")
         {
+            UIManager.Instance.UISystemMessage("[System]: Downloading assets... Please wait...");
             Destroy(Asset0);
             Destroy(Asset1);
 
@@ -237,6 +238,7 @@ public class ObjectSpawner : MonoBehaviour
         bool isSwitchMode = CurrentMode != "Comparison";
         if(obj0rid != Asset0rid || isSwitchMode)
         {
+            UIManager.Instance.UISystemMessage("[System]: Downloading assets... Please wait...");
             Destroy(Asset0);
 
             Asset0rid = obj0rid;
@@ -253,6 +255,7 @@ public class ObjectSpawner : MonoBehaviour
 
         if(obj1rid != Asset1rid || isSwitchMode)
         {
+            UIManager.Instance.UISystemMessage("[System]: Downloading assets... Please wait...");
             Destroy(Asset1);
 
             Asset1rid = obj1rid;
@@ -295,5 +298,6 @@ public class ObjectSpawner : MonoBehaviour
                 break;
         }
 
+        UIManager.Instance.UISystemMessage("[System]: Assets downloaded!");
     }
 }

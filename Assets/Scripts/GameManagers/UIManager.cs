@@ -37,6 +37,7 @@ public class UIManager : MonoBehaviour
     private Quaternion ControllerRotRecord = new Quaternion(0f, 0f, 0f, 0f);
     private bool IsControllerPosRecorded = false;
 
+    [SerializeField] private Transform LeftHandAnchor;
     [SerializeField] private Transform CentreEye;
     [SerializeField] private GameObject MovePanel;
 
@@ -83,15 +84,15 @@ public class UIManager : MonoBehaviour
             {
                 if(!IsControllerPosRecorded)
                 {
-                    ControllerPosRecord = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch);
+                    ControllerPosRecord = LeftHandAnchor.position;
                     IsControllerPosRecorded = true;
                 }
 
-                Vector3 controllerDPos = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch) - ControllerPosRecord;
+                Vector3 controllerDPos = LeftHandAnchor.position - ControllerPosRecord;
 
                 FollowTransform.position += controllerDPos;
 
-                ControllerPosRecord = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch);
+                ControllerPosRecord = LeftHandAnchor.position;
 
                 MovePanel.SetActive(true);
             }
@@ -101,12 +102,9 @@ public class UIManager : MonoBehaviour
                 IsControllerPosRecorded = false;
             }
 
-
-
             Quaternion lookatRot = Quaternion.LookRotation(CentreEye.position - FollowTransform.position, Vector3.up);
             lookatRot *= Quaternion.Euler(0f, 180f, 0f);
             FollowTransform.rotation = lookatRot;
-
 
             GameUICanvas.transform.position = Vector3.Lerp(GameUICanvas.transform.position, FollowTransform.position, Time.deltaTime * FollowSpeed);
             GameUICanvas.transform.rotation = Quaternion.Lerp(GameUICanvas.transform.rotation, FollowTransform.rotation, Time.deltaTime * FollowSpeed);

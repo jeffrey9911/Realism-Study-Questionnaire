@@ -30,13 +30,11 @@ public class UserController : MonoBehaviour
         {
             this.GetComponent<CharacterController>().enabled = false;
             ResetTimer += Time.deltaTime;
-            this.transform.position = Vector3.Lerp(this.transform.position, new Vector3(0f, 1.52f, 0f), ResetTimer * 0.5f);
-            this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.Euler(0f, 0f, 0f), ResetTimer * 0.5f);
+            this.transform.position = Vector3.Lerp(this.transform.position, new Vector3(0f, this.transform.position.y, 0f), ResetTimer);
 
-            if (ResetTimer >= 1.99)
+            if (ResetTimer >= 0.99)
             {
-                this.transform.position = new Vector3(0f, 1.6f, 0f);
-                this.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                this.transform.position = new Vector3(0f, this.transform.position.y, 0f);
                 ResetTimer = 0f;
                 IsResetUser = false;
                 this.GetComponent<CharacterController>().enabled = true;
@@ -44,7 +42,3 @@ public class UserController : MonoBehaviour
         }
     }
 }
-
-
-
-

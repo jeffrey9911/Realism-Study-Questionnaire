@@ -31,6 +31,9 @@ public class ObjectSpawner : MonoBehaviour
 
     private string CurrentMode = "";
 
+    private float DownloadingTimer = 0f;
+    public bool IsDownloading = false;
+
     private void Awake()
     {
         if(Instance == null)
@@ -61,6 +64,12 @@ public class ObjectSpawner : MonoBehaviour
 
     private void Update()
     {
+        if(IsDownloading)
+        {
+            DownloadingTimer += Time.deltaTime;
+            UIManager.Instance.UISystemMessage($"[System]: Downloading assets... Please wait... [{(int)DownloadingTimer} sec]");
+        }
+
         if(QuestionManager.Instance.isQuestionnaireFinished)
         {
             isComparison = false;
@@ -213,7 +222,8 @@ public class ObjectSpawner : MonoBehaviour
     {
         if(objrid != Asset0rid || CurrentMode != "Evaluation")
         {
-            UIManager.Instance.UISystemMessage("[System]: Downloading assets... Please wait...");
+            DownloadingTimer = 0f;
+            IsDownloading = true;
             Destroy(Asset0);
             Destroy(Asset1);
 
@@ -238,7 +248,8 @@ public class ObjectSpawner : MonoBehaviour
         bool isSwitchMode = CurrentMode != "Comparison";
         if(obj0rid != Asset0rid || isSwitchMode)
         {
-            UIManager.Instance.UISystemMessage("[System]: Downloading assets... Please wait...");
+            DownloadingTimer = 0f;
+            IsDownloading = true;
             Destroy(Asset0);
 
             Asset0rid = obj0rid;
@@ -255,7 +266,8 @@ public class ObjectSpawner : MonoBehaviour
 
         if(obj1rid != Asset1rid || isSwitchMode)
         {
-            UIManager.Instance.UISystemMessage("[System]: Downloading assets... Please wait...");
+            DownloadingTimer = 0f;
+            IsDownloading = true;
             Destroy(Asset1);
 
             Asset1rid = obj1rid;
@@ -298,6 +310,7 @@ public class ObjectSpawner : MonoBehaviour
                 break;
         }
 
+        ObjectSpawner.Instance.IsDownloading = false;
         UIManager.Instance.UISystemMessage("[System]: Assets downloaded!");
     }
 }

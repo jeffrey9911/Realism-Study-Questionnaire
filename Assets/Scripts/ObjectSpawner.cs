@@ -275,13 +275,13 @@ public class ObjectSpawner : MonoBehaviour
         {
             case 0:
                 Asset0 = Instantiate(obj,
-                    new Vector3(CentreBase.transform.position.x, 1f, CentreBase.transform.position.z),
+                    new Vector3(CentreBase.transform.position.x, 0.21f, CentreBase.transform.position.z),
                     Quaternion.identity);
                 break;
 
             case 1:
                 Asset0 = Instantiate(obj,
-                    new Vector3(BlueBase.transform.position.x, 1f, BlueBase.transform.position.z),
+                    new Vector3(BlueBase.transform.position.x, 0.21f, BlueBase.transform.position.z),
                     Quaternion.identity);
                 break;
 

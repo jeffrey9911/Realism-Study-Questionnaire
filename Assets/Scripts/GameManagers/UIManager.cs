@@ -38,6 +38,7 @@ public class UIManager : MonoBehaviour
     private bool IsControllerPosRecorded = false;
 
     [SerializeField] private Transform CentreEye;
+    [SerializeField] private GameObject MovePanel;
 
     private void Awake()
     {
@@ -83,30 +84,33 @@ public class UIManager : MonoBehaviour
                 if(!IsControllerPosRecorded)
                 {
                     ControllerPosRecord = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch);
-                    //ControllerRotRecord = OVRInput.GetLocalControllerRotation(OVRInput.Controller.LTouch);
                     IsControllerPosRecorded = true;
                 }
 
                 Vector3 controllerDPos = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch) - ControllerPosRecord;
-                //Quaternion controllerDRot = OVRInput.GetLocalControllerRotation(OVRInput.Controller.LTouch) * Quaternion.Inverse(ControllerRotRecord);
 
                 FollowTransform.position += controllerDPos;
-                //FollowTransform.rotation *= new Quaternion(controllerDRot.x * 0.1f, controllerDRot.y * 0.1f, controllerDRot.z * 0.1f, controllerDRot.w * 0.1f);
 
                 ControllerPosRecord = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch);
-                //ControllerRotRecord = OVRInput.GetLocalControllerRotation(OVRInput.Controller.LTouch);
+
+                MovePanel.SetActive(true);
             }
             else
             {
+                MovePanel.SetActive(false);
                 IsControllerPosRecorded = false;
             }
 
-            FollowTransform.LookAt(CentreEye.position);
+
+
+            Quaternion lookatRot = Quaternion.LookRotation(CentreEye.position - FollowTransform.position, Vector3.up);
+            lookatRot *= Quaternion.Euler(0f, 180f, 0f);
+            FollowTransform.rotation = lookatRot;
 
 
             GameUICanvas.transform.position = Vector3.Lerp(GameUICanvas.transform.position, FollowTransform.position, Time.deltaTime * FollowSpeed);
             GameUICanvas.transform.rotation = Quaternion.Lerp(GameUICanvas.transform.rotation, FollowTransform.rotation, Time.deltaTime * FollowSpeed);
-            GameUICanvas.transform.localScale = Vector3.Lerp(GameUICanvas.transform.localScale, new Vector3(-0.0035f, 0.0035f, 0.0035f), Time.deltaTime * FollowSpeed);
+            GameUICanvas.transform.localScale = Vector3.Lerp(GameUICanvas.transform.localScale, new Vector3(0.0035f, 0.0035f, 0.0035f), Time.deltaTime * FollowSpeed);
 
             if (!IsQuestionPanelTransformed)
             {

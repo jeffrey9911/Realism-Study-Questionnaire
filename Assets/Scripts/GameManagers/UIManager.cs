@@ -33,6 +33,12 @@ public class UIManager : MonoBehaviour
     private bool IsQuestionPanelTransformed = false;
     private float FollowSpeed = 3f;
 
+    private Vector3 ControllerPosRecord = new Vector3(0f, 0f, 0f);
+    private Quaternion ControllerRotRecord = new Quaternion(0f, 0f, 0f, 0f);
+    private bool IsControllerPosRecorded = false;
+
+    [SerializeField] private Transform CentreEye;
+
     private void Awake()
     {
         if(Instance == null)
@@ -71,9 +77,36 @@ public class UIManager : MonoBehaviour
         if(IsUiFollowing)
         {
             if (OVRInput.GetDown(OVRInput.Button.Start)) GameUICanvas.SetActive(!GameUICanvas.activeSelf);
+
+            if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger))
+            {
+                if(!IsControllerPosRecorded)
+                {
+                    ControllerPosRecord = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch);
+                    //ControllerRotRecord = OVRInput.GetLocalControllerRotation(OVRInput.Controller.LTouch);
+                    IsControllerPosRecorded = true;
+                }
+
+                Vector3 controllerDPos = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch) - ControllerPosRecord;
+                //Quaternion controllerDRot = OVRInput.GetLocalControllerRotation(OVRInput.Controller.LTouch) * Quaternion.Inverse(ControllerRotRecord);
+
+                FollowTransform.position += controllerDPos;
+                //FollowTransform.rotation *= new Quaternion(controllerDRot.x * 0.1f, controllerDRot.y * 0.1f, controllerDRot.z * 0.1f, controllerDRot.w * 0.1f);
+
+                ControllerPosRecord = OVRInput.GetLocalControllerPosition(OVRInput.Controller.LTouch);
+                //ControllerRotRecord = OVRInput.GetLocalControllerRotation(OVRInput.Controller.LTouch);
+            }
+            else
+            {
+                IsControllerPosRecorded = false;
+            }
+
+            FollowTransform.LookAt(CentreEye.position);
+
+
             GameUICanvas.transform.position = Vector3.Lerp(GameUICanvas.transform.position, FollowTransform.position, Time.deltaTime * FollowSpeed);
             GameUICanvas.transform.rotation = Quaternion.Lerp(GameUICanvas.transform.rotation, FollowTransform.rotation, Time.deltaTime * FollowSpeed);
-            GameUICanvas.transform.localScale = Vector3.Lerp(GameUICanvas.transform.localScale, FollowTransform.localScale, Time.deltaTime * FollowSpeed);
+            GameUICanvas.transform.localScale = Vector3.Lerp(GameUICanvas.transform.localScale, new Vector3(-0.0035f, 0.0035f, 0.0035f), Time.deltaTime * FollowSpeed);
 
             if (!IsQuestionPanelTransformed)
             {
@@ -140,8 +173,8 @@ public class UIManager : MonoBehaviour
 
         UISystemMessage("[System]: Survey Versions Loaded!");
 
-        //DataRecorder.Instance.SurveyVersion = "3";
-        //StartSurveyOnClick();
+        DataRecorder.Instance.SurveyVersion = "3";
+        StartSurveyOnClick();
     }
 
     public void StartSurveyOnClick()

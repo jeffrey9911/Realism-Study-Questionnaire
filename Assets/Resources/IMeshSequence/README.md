@@ -1,1 +1,0 @@
-this folder is to save mesh sequence folders

@@ -1,25 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using UnityEditor;
 using UnityEngine;
 
 public class MeshSequenceLoader : MonoBehaviour
 {
-    public string FolderName;
-    public string ExampleMeshName;
-    public int Frames;
+    public GameObject ExampleMesh;
+    private string FolderName;
+    private string ExampleMeshName;
+    private int Frames;
 
-    private string FolderBasePath = "IMeshSequence\\";
+    private string FolderBasePath = "IMeshSequence/";
 
-    public List<GameObject> ObjectSequence = new List<GameObject>();
+    private List<GameObject> ObjectSequence = new List<GameObject>();
 
     public bool IsUsingMaterialSequence;
-    [SerializeField] [HideInInspector] public string ExampleMaterialName;
-    [SerializeField] [HideInInspector] public List<Material> MaterialSequence = new List<Material>();
+    [SerializeField] [HideInInspector] public Texture2D ExampleMaterial;
+    private string ExampleMaterialName;
+    private List<Material> MaterialSequence = new List<Material>();
 
     [ContextMenu("Load Mesh Sequence")]
     public void LoadMeshSequence()
     {
+#if UNITY_EDITOR
+        if(ExampleMesh != null)
+        {
+            ExampleMeshName = ExampleMesh.name;
+            FolderName = AssetDatabase.GetAssetPath(ExampleMesh).Replace("Assets/Resources/IMeshSequence/", "").Replace(System.IO.Path.GetFileName(AssetDatabase.GetAssetPath(ExampleMesh)), "");
+        }
+        else
+        {
+            Debug.LogError("Example Object Mesh is null!");
+            return;
+        }
+
+
         int IndexDigits = 0;
 
         for(int i = ExampleMeshName.Length - 1; i >= 0; i--)
@@ -30,9 +46,9 @@ public class MeshSequenceLoader : MonoBehaviour
 
         string MeshName = ExampleMeshName.Substring(0, ExampleMeshName.Length - IndexDigits);
 
-        FolderBasePath += $"{FolderName}\\";
+        FolderBasePath += $"{FolderName}";
 
-        Debug.Log($"Mesh Name Loaded: {MeshName}, Index format: {(0).ToString($"D{IndexDigits}")}");
+        Debug.Log($"Folder Base Path: {FolderBasePath}, Mesh Name Loaded: {MeshName}, Index format: {(0).ToString($"D{IndexDigits}")}");
 
 
         while(true)
@@ -48,6 +64,16 @@ public class MeshSequenceLoader : MonoBehaviour
 
         if(IsUsingMaterialSequence)
         {
+            if (ExampleMaterial != null)
+            {
+                ExampleMaterialName = ExampleMaterial.name;
+            }
+            else
+            {
+                Debug.LogError("Example Object Material is null!");
+                return;
+            }
+
             int TextureIndexDigits = 0;
 
             for (int i = ExampleMaterialName.Length - 1; i >= 0; i--)
@@ -67,13 +93,9 @@ public class MeshSequenceLoader : MonoBehaviour
 
                 string materialName = $"mat_{i.ToString($"D{TextureIndexDigits}")}";
 
-#if UNITY_EDITOR
-
                 AssetDatabase.CreateAsset(material, $"Assets\\Resources\\{FolderBasePath}{materialName}.mat");
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
-
-#endif
 
                 Material loadedMaterial = Resources.Load<Material>(FolderBasePath + materialName);
 
@@ -92,6 +114,7 @@ public class MeshSequenceLoader : MonoBehaviour
         }
 
         Debug.Log("Mesh Sequence Loaded!");
+#endif
     }
 
     public void DeactiveAll()
@@ -129,4 +152,12 @@ public class MeshSequenceLoader : MonoBehaviour
         Debug.Log("Offset Applied");
     }
 
+    [ContextMenu("Show Sequence Information")]
+    public void ShowSequenceInformation()
+    {
+        Debug.Log($"Folder Name: {FolderName}");
+        Debug.Log($"Example Mesh Name: {ExampleMeshName}");
+        Debug.Log($"Base path: {FolderBasePath}");
+        Debug.Log($"Frames: {Frames}");
+    }
 }

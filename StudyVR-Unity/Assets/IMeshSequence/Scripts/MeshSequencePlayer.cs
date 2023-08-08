@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MeshSequencePlayer : MonoBehaviour
 {
-    public int PlayerFramePerSecond = 30;
+    public float PlayerFramePerSecond = 30;
 
     public bool isPlaying = false;
 
@@ -14,7 +14,11 @@ public class MeshSequencePlayer : MonoBehaviour
 
     private List<GameObject> ObjectSequence = new List<GameObject>();
 
-    private void Start()
+    public bool isPlayingAudio = false;
+    [SerializeField][HideInInspector] public AudioClip PlayerAudio;
+    private AudioSource PlayerAudioSource;
+
+    private void Awake()
     {
         foreach(Transform child in this.transform)
         {
@@ -24,6 +28,16 @@ public class MeshSequencePlayer : MonoBehaviour
         foreach(GameObject obj in ObjectSequence)
         {
             obj.SetActive(false);
+        }
+
+        if(isPlayingAudio)
+        {
+            if(PlayerAudio != null)
+            {
+                PlayerAudioSource = this.gameObject.AddComponent<AudioSource>();
+                PlayerAudioSource.clip = PlayerAudio;
+                PlayerFramePerSecond = ObjectSequence.Count / PlayerAudio.length;
+            }
         }
     }
 
@@ -47,6 +61,12 @@ public class MeshSequencePlayer : MonoBehaviour
         int NextFrame = (CurrentFrame + 1) >= ObjectSequence.Count ? 0 : CurrentFrame + 1;
 
         ObjectSequence[CurrentFrame].SetActive(false);
+
+        if(CurrentFrame == 0 && isPlayingAudio)
+        {
+            PlayerAudioSource.Play();
+        }
+
         ObjectSequence[NextFrame].SetActive(true);
 
         CurrentFrame = NextFrame;

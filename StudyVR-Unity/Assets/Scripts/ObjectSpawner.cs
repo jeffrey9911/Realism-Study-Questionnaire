@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -31,9 +32,6 @@ public class ObjectSpawner : MonoBehaviour
 
     private string CurrentMode = "";
 
-    private float DownloadingTimer = 0f;
-    public bool IsDownloading = false;
-
     private void Awake()
     {
         if(Instance == null)
@@ -64,12 +62,6 @@ public class ObjectSpawner : MonoBehaviour
 
     private void Update()
     {
-        if(IsDownloading)
-        {
-            DownloadingTimer += Time.deltaTime;
-            UIManager.Instance.UISystemMessage($"[System]: Downloading assets... Please wait... [{(int)DownloadingTimer} sec]");
-        }
-
         if(QuestionManager.Instance.isQuestionnaireFinished)
         {
             isComparison = false;
@@ -222,19 +214,25 @@ public class ObjectSpawner : MonoBehaviour
     {
         if(objrid != Asset0rid || CurrentMode != "Evaluation")
         {
-            DownloadingTimer = 0f;
-            IsDownloading = true;
             Destroy(Asset0);
             Destroy(Asset1);
 
             Asset0rid = objrid;
-
+            /*
             DataManager.Instance.UABTable.GetAsset(objrid, 
                 (gobj, gname) =>
                 {
                     OnSpawnObject(gobj, 0);
                 }
                 );
+            */
+
+            StartCoroutine(ObjectManager.Instance.GetObject(objrid, 
+                (gobj) =>
+                {
+                    OnSpawnObject(gobj, 0);
+                }
+                ));
 
             CurrentMode = "Evaluation";
         }
@@ -248,36 +246,32 @@ public class ObjectSpawner : MonoBehaviour
         bool isSwitchMode = CurrentMode != "Comparison";
         if(obj0rid != Asset0rid || isSwitchMode)
         {
-            DownloadingTimer = 0f;
-            IsDownloading = true;
             Destroy(Asset0);
 
             Asset0rid = obj0rid;
 
-            DataManager.Instance.UABTable.GetAsset(obj0rid,
-                (gobj, gname) =>
+            StartCoroutine(ObjectManager.Instance.GetObject(obj0rid,
+                (gobj) =>
                 {
                     OnSpawnObject(gobj, 1);
                 }
-                );
+                ));
 
             CurrentMode = "Comparison";
         }
 
         if(obj1rid != Asset1rid || isSwitchMode)
         {
-            DownloadingTimer = 0f;
-            IsDownloading = true;
             Destroy(Asset1);
 
             Asset1rid = obj1rid;
 
-            DataManager.Instance.UABTable.GetAsset(obj1rid,
-                (gobj, gname) =>
+            StartCoroutine(ObjectManager.Instance.GetObject(obj1rid,
+                (gobj) =>
                 {
                     OnSpawnObject(gobj, 2);
                 }
-                );
+                ));
         }
 
         isEvaluation = false;
@@ -309,8 +303,5 @@ public class ObjectSpawner : MonoBehaviour
             default:
                 break;
         }
-
-        ObjectSpawner.Instance.IsDownloading = false;
-        UIManager.Instance.UISystemMessage("[System]: Assets downloaded!");
     }
 }

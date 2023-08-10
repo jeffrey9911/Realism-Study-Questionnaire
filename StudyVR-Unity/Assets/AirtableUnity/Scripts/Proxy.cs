@@ -308,13 +308,21 @@ namespace AirtableUnity.PX
             outputActionRecords?.Invoke(fieldDict);
         }
 
-        public static IEnumerator GetRecordAssetBundle<T>(string assetBundleUrl, Action<GameObject> callback)
+        public static IEnumerator GetRecordAssetBundle<T>(string assetBundleUrl, Action<GameObject> callback, Action<float> progressCallback = null)
         {
             GameObject gameObject = null;
 
             UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(assetBundleUrl);
 
-            yield return request.SendWebRequest();
+            AsyncOperation asyncOperation = request.SendWebRequest();
+
+            //yield return request.SendWebRequest();
+
+            while(!asyncOperation.isDone)
+            {
+                progressCallback?.Invoke(Mathf.Clamp01(asyncOperation.progress));
+                yield return null;
+            }
 
             if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
             {

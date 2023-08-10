@@ -636,7 +636,6 @@ MonoBehaviour:
   BlueBase: {fileID: 1165081120924397314}
   RedBase: {fileID: 1165081119718776818}
   CentreBase: {fileID: 1165081120371146142}
-  IsDownloading: 0
 --- !u!1 &257411989
 GameObject:
   m_ObjectHideFlags: 0
@@ -5236,6 +5235,7 @@ GameObject:
   - component: {fileID: 1358334179}
   - component: {fileID: 1358334181}
   - component: {fileID: 1358334180}
+  - component: {fileID: 1358334182}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5341,6 +5341,18 @@ MonoBehaviour:
   PreStudyResponse: []
   QuestionnaireResponse: []
   PostStudyResponse: []
+--- !u!114 &1358334182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358334176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26bff4cf9cdc69648aa93e8f1861d523, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1367279007 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4453513310108136, guid: 835e735ca71bf78459fb2cababd74112, type: 3}

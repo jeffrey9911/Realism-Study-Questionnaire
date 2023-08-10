@@ -175,7 +175,7 @@ public class UIManager : MonoBehaviour
 
         UISystemMessage("[System]: Survey Versions Loaded!");
 
-        //DataRecorder.Instance.SurveyVersion = "3";
+        //.Instance.SurveyVersion = "4";
         //StartSurveyOnClick();
     }
 
@@ -231,6 +231,7 @@ public class UIManager : MonoBehaviour
         SurveyConfigPanel.SetActive(false);
         QuestionPanel.SetActive(true);
 
+        ObjectManager.Instance.StartPreload();
         QuestionManager.Instance.LoadQuestion();
     }
 

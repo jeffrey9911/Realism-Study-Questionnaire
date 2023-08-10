@@ -32,10 +32,10 @@ public class MeshSequencePlayer : MonoBehaviour
 
         if(isPlayingAudio)
         {
-            if(PlayerAudio != null)
+            if(PlayerAudio != null && this.TryGetComponent<AudioSource>(out PlayerAudioSource))
             {
-                PlayerAudioSource = this.gameObject.AddComponent<AudioSource>();
-                PlayerAudioSource.clip = PlayerAudio;
+                //PlayerAudioSource = this.gameObject.AddComponent<AudioSource>();
+                //PlayerAudioSource.clip = PlayerAudio;
                 PlayerFramePerSecond = ObjectSequence.Count / PlayerAudio.length;
             }
         }

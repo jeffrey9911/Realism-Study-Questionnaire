@@ -288,11 +288,11 @@ public class QuestionManager : MonoBehaviour
             switch (AssetResponseType)
             {
                 case "Comparison":
-                    ObjectSpawner.Instance.SpawnObject(Asset0.Replace("[", "").Replace("]", ""), Asset1.Replace("[", "").Replace("]", ""));
+                    ObjectSpawner.Instance.SpawnObject(Asset0, Asset1);
                     break;
 
                 case "Evaluation":
-                    ObjectSpawner.Instance.SpawnObject(Asset0.Replace("[", "").Replace("]", ""));
+                    ObjectSpawner.Instance.SpawnObject(Asset0);
                     break;
 
                 default:

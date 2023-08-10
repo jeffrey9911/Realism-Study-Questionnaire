@@ -189,35 +189,39 @@ public class IAirtable : MonoBehaviour
     /// </summary>
     /// <param name="recordID"></param>
     /// <param name="callback"></param>
-    public void GetAsset(string recordID, Action<GameObject, string> callback)
+    public void GetAsset(string recordID, Action<GameObject, string> callback, Action<float> progressCallback = null)
     {
         SelfCheck();
         StartCoroutine(GetRecordContent(recordID,
             (recordGot) =>
             {
-                OnGetAssetID(recordGot, callback);
+                OnGetAssetID(recordGot, callback, progressCallback);
             }
             ));
     }
 
-    private void OnGetAssetID(Dictionary<string, string> record, Action<GameObject, string> callback)
+    private void OnGetAssetID(Dictionary<string, string> record, Action<GameObject, string> callback, Action<float> progressCallback = null)
     {
         if (record.ContainsKey("File ID"))
         {
             string fileId = record["File ID"];
             string objUrl = $"https://www.googleapis.com/drive/v3/files/{fileId}?alt=media&key={EnvKey.GOOGLE_APIKEY}";
 
-            StartCoroutine(GetAssetBundle(objUrl, fileId, callback));
+            StartCoroutine(GetAssetBundle(objUrl, fileId, callback, progressCallback));
         }
     }
 
-    private IEnumerator GetAssetBundle(string assetBundleURL, string fileId, Action<GameObject, string> callback)
+    private IEnumerator GetAssetBundle(string assetBundleURL, string fileId, Action<GameObject, string> callback, Action<float> progressCallback = null)
     {
         yield return StartCoroutine(AirtableUnity.PX.Proxy.GetRecordAssetBundle<BaseField>(assetBundleURL,
             (gameObjGot) =>
             {
                 OnGetObjFinish(gameObjGot, fileId);
                 callback?.Invoke(gameObjGot, fileId);
+            },
+            (downloadProgress) =>
+            {
+                progressCallback?.Invoke(downloadProgress);
             }
             ));
     }

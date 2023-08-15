@@ -218,14 +218,8 @@ public class ObjectSpawner : MonoBehaviour
             Destroy(Asset1);
 
             Asset0rid = objrid;
-            /*
-            DataManager.Instance.UABTable.GetAsset(objrid, 
-                (gobj, gname) =>
-                {
-                    OnSpawnObject(gobj, 0);
-                }
-                );
-            */
+            
+            UserController.Instance.IsResetUser = true;
 
             StartCoroutine(ObjectManager.Instance.GetObject(objrid, 
                 (gobj) =>
@@ -249,6 +243,8 @@ public class ObjectSpawner : MonoBehaviour
             Destroy(Asset0);
 
             Asset0rid = obj0rid;
+
+            UserController.Instance.IsResetUser = true;
 
             StartCoroutine(ObjectManager.Instance.GetObject(obj0rid,
                 (gobj) =>
@@ -280,24 +276,21 @@ public class ObjectSpawner : MonoBehaviour
 
     private void OnSpawnObject(GameObject obj, int spawnPos)
     {
+        MeshSequenceContainer imsContainer;
+        bool doesContainIMS = obj.TryGetComponent<MeshSequenceContainer>(out imsContainer);
+
         switch (spawnPos)
         {
             case 0:
-                Asset0 = Instantiate(obj,
-                    new Vector3(CentreBase.transform.position.x, 0.7f, CentreBase.transform.position.z),
-                    Quaternion.identity);
+                Asset0 = Instantiate(obj, new Vector3(CentreBase.transform.position.x, 0.7f, CentreBase.transform.position.z), Quaternion.identity);
                 break;
 
             case 1:
-                Asset0 = Instantiate(obj,
-                    new Vector3(BlueBase.transform.position.x, 0.7f, BlueBase.transform.position.z),
-                    Quaternion.identity);
+                Asset0 = Instantiate(obj, new Vector3(BlueBase.transform.position.x, 0.7f, BlueBase.transform.position.z), Quaternion.identity);
                 break;
 
             case 2:
-                Asset1 = Instantiate(obj,
-                                       new Vector3(RedBase.transform.position.x, 1f, RedBase.transform.position.z),
-                                                          Quaternion.identity);
+                Asset1 = Instantiate(obj, new Vector3(RedBase.transform.position.x, 0.7f, RedBase.transform.position.z), Quaternion.identity);
                 break;
 
             default:

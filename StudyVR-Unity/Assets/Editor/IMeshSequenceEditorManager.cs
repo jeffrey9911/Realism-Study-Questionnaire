@@ -14,10 +14,7 @@ public class IMeshSequenceLoaderEditorManager : Editor
 
         MeshSequenceLoader meshSequenceLoader = (MeshSequenceLoader)target;
 
-        if(meshSequenceLoader.IsUsingMaterialSequence)
-        {
-            SetPropertyField("ExampleMaterial", meshSequenceLoader.IsUsingMaterialSequence);
-        }
+        
 
         serializedObject.ApplyModifiedProperties();
     }

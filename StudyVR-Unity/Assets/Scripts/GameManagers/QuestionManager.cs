@@ -140,8 +140,6 @@ public class QuestionManager : MonoBehaviour
             default:
                 break;
         }
-
-        UserController.Instance.IsResetUser = true;
     }
 
     private void SetQuestions(string ResponseType, string ResponseConfig, string QuestionString, string AssetResponseType = null, string Asset0 = null, string Asset1 = null, int counter = 0)

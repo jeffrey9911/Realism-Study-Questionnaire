@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MeshSequencePlayer : MonoBehaviour
@@ -12,32 +13,61 @@ public class MeshSequencePlayer : MonoBehaviour
 
     private float FrameTimer = 0;
 
-    private List<GameObject> ObjectSequence = new List<GameObject>();
+    private MeshSequenceContainer meshSequenceContainer;
+    private MeshRenderer meshRenderer;
+    private MeshFilter meshFilter;
 
     public bool isPlayingAudio = false;
     [SerializeField][HideInInspector] public AudioClip PlayerAudio;
     private AudioSource PlayerAudioSource;
 
+    private int FrameCount = 0;
+
     private void Awake()
     {
-        foreach(Transform child in this.transform)
+
+        foreach (Transform child in this.transform)
         {
-            ObjectSequence.Add(child.gameObject);
+            child.gameObject.SetActive(false);
         }
 
-        foreach(GameObject obj in ObjectSequence)
+        meshSequenceContainer = this.GetComponent<MeshSequenceContainer>();
+
+        if(meshSequenceContainer == null)
         {
-            obj.SetActive(false);
+            Debug.LogError("Please load mesh sequence first!");
+            isPlaying = false;
+            return;
+        }
+
+        meshRenderer = this.AddComponent<MeshRenderer>();
+        meshFilter = this.AddComponent<MeshFilter>();
+        FrameCount = meshSequenceContainer.MeshSequence.Count;
+
+        if(isPlayingAudio)
+        {
+            if(PlayerAudio != null)
+            {
+                PlayerAudioSource = this.gameObject.AddComponent<AudioSource>();
+                PlayerAudioSource.clip = PlayerAudio;
+                PlayerAudioSource.loop = true;
+                PlayerFramePerSecond = meshSequenceContainer.MeshSequence.Count / PlayerAudio.length;
+            }
+        }
+    }
+
+    private void Start()
+    {
+        if (meshSequenceContainer != null)
+        {
+            this.transform.position += meshSequenceContainer.PositionOffset;
+            this.transform.eulerAngles += meshSequenceContainer.RotationOffset;
+            this.transform.localScale = meshSequenceContainer.ScaleOffset;
         }
 
         if(isPlayingAudio)
         {
-            if(PlayerAudio != null && this.TryGetComponent<AudioSource>(out PlayerAudioSource))
-            {
-                //PlayerAudioSource = this.gameObject.AddComponent<AudioSource>();
-                //PlayerAudioSource.clip = PlayerAudio;
-                PlayerFramePerSecond = ObjectSequence.Count / PlayerAudio.length;
-            }
+            PlayerAudioSource.Play();
         }
     }
 
@@ -45,30 +75,66 @@ public class MeshSequencePlayer : MonoBehaviour
     {
         if(isPlaying)
         {
-            FrameTimer += Time.deltaTime;
-
-            if(FrameTimer >= 1f/ PlayerFramePerSecond)
+            if (isPlayingAudio)
             {
-                SwapFrame();
-                FrameTimer = 0;
+                if (Mathf.FloorToInt(PlayerAudioSource.time / PlayerAudio.length * (FrameCount - 1)) != CurrentFrame)
+                {
+                    SwapFrame();
+                }
+            }
+            else
+            {
+                FrameTimer += Time.deltaTime;
+
+                if (FrameTimer >= 1f / PlayerFramePerSecond)
+                {
+                    SwapFrame();
+                    FrameTimer = 0;
+                }
             }
 
         }
+        else
+        {
+            if(Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                SwapFrame();
+            }
+            else if(Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                SwapFrame(true);
+            }
+        }
     }
 
-    private void SwapFrame()
+    private void SwapFrame(bool isReversing = false)
     {
-        int NextFrame = (CurrentFrame + 1) >= ObjectSequence.Count ? 0 : CurrentFrame + 1;
-
-        ObjectSequence[CurrentFrame].SetActive(false);
-
-        if(CurrentFrame == 0 && isPlayingAudio)
+        int NextFrame = 0;
+        if (isReversing)
         {
-            PlayerAudioSource.Play();
+            NextFrame = (CurrentFrame - 1) < 0 ? FrameCount - 1 : CurrentFrame - 1;
+        }
+        else
+        {
+            NextFrame = (CurrentFrame + 1) >= FrameCount ? 0 : CurrentFrame + 1;
         }
 
-        ObjectSequence[NextFrame].SetActive(true);
+        meshFilter.mesh = meshSequenceContainer.MeshSequence[NextFrame];
+        meshRenderer.sharedMaterial = meshSequenceContainer.MeshRendererSequence[NextFrame].sharedMaterial;
 
         CurrentFrame = NextFrame;
+    }
+
+    [ContextMenu("Apply Player Transform Offset")]
+    public void ApplyOffset()
+    {
+        if (meshSequenceContainer == null) { meshSequenceContainer = this.GetComponent<MeshSequenceContainer>(); }
+
+        meshSequenceContainer.PositionOffset = this.transform.position;
+        meshSequenceContainer.RotationOffset = this.transform.eulerAngles;
+        meshSequenceContainer.ScaleOffset = this.transform.localScale;
+
+
+        Debug.Log("Offset Applied");
     }
 }

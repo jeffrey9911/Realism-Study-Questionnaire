@@ -59,6 +59,16 @@ public class QSComponent : MonoBehaviour
     
     public void KeyOnClick(char key)
     {
+        if(key == '\b')
+        {
+            if(InputField.text.Length > 0)
+            {
+                InputField.text = InputField.text.Substring(0, InputField.text.Length - 1);
+            }
+
+            return;
+        }
+
         InputField.text += key;
     }
 

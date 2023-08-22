@@ -350,10 +350,11 @@ public class QuestionManager : MonoBehaviour
                     isToggleMode = true;
                     break;
                 case ResponseMode.Text:
+                    /*
                     if(CurrentStudy == "PreStudy" && CurrentQuestionIndex == 0)
                     {
-                        DataRecorder.Instance.ParicipantID = qsComponents[i].GetText();
-                    }
+                        DataRecorder.Instance.PaticipantID = qsComponents[i].GetText();
+                    }*/
                     responseString += $"{qsComponents[i].QuestionID}:{qsComponents[i].GetText()}\\n";
                     break;
                 default:

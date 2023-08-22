@@ -25,7 +25,7 @@ public class DataRecorder : MonoBehaviour
     public string PostStudyID;
     public string QuestionnaireID;
 
-    public string ParicipantID;
+    public string PaticipantID;
 
     public List<string> PreStudyResponse = new List<string>();
     public List<string> QuestionnaireResponse = new List<string>();
@@ -84,6 +84,17 @@ public class DataRecorder : MonoBehaviour
         string quesR = "{\\n";
         string postR = "{\\n";
 
+        int randomNum = Random.Range(1000, 10000);
+
+        string currentDateTimeStr = $"{(System.DateTime.Now.Year % 100):00}" +
+            $"{(System.DateTime.Now.Month):00}" +
+            $"{(System.DateTime.Now.Day):00}" +
+            $"{(System.DateTime.Now.Hour):00}" +
+            $"{(System.DateTime.Now.Minute):00}" +
+            $"{(System.DateTime.Now.Second):00}";
+
+        PaticipantID = $"{randomNum}{currentDateTimeStr}";
+        
         foreach (string response in PreStudyResponse)
         {
             preR += response;

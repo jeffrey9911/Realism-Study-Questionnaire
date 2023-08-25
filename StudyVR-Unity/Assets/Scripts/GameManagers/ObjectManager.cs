@@ -23,6 +23,8 @@ public class ObjectManager : MonoBehaviour
 
     private int CurrentPreloadIndex = 0;
 
+    private bool IsPreloaded = false;
+
     private void Awake()
     {
         if (Instance == null)
@@ -38,6 +40,12 @@ public class ObjectManager : MonoBehaviour
 
     public void StartPreload()
     {
+        if (IsPreloaded)
+        {
+            UIManager.Instance.UISystemMessage($"[System]: All objects are preloaded.");
+            return;
+        }
+
         foreach(string questionKey in DataManager.Instance.QuestionTable.LocalTable.itable.Keys)
         {
             string asset0 = null;
@@ -91,6 +99,7 @@ public class ObjectManager : MonoBehaviour
         if(CurrentPreloadIndex >= RIDs.Count)
         {
             UIManager.Instance.UISystemMessage($"[System]: All objects are preloaded.");
+            IsPreloaded = true;
             return;
         }
 
@@ -131,7 +140,7 @@ public class ObjectManager : MonoBehaviour
 
     public IEnumerator GetObject(string rid, System.Action<GameObject> callback)
     {
-        while(true)
+        while (true)
         {
             if (TryGetPreloadedObject(rid, out GameObject gameObject))
             {

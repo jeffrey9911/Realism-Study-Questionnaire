@@ -119,4 +119,11 @@ public class DataRecorder : MonoBehaviour
 
         DataManager.Instance.UploadResponse(preR, quesR, postR);
     }
+
+    public void ClearRecord()
+    {
+        PreStudyResponse.Clear();
+        QuestionnaireResponse.Clear();
+        PostStudyResponse.Clear();
+    }
 }

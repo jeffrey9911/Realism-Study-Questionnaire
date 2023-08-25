@@ -32,6 +32,8 @@ public class ObjectSpawner : MonoBehaviour
 
     private string CurrentMode = "";
 
+    public bool isStudyFinished = false;
+
     private void Awake()
     {
         if(Instance == null)
@@ -62,19 +64,13 @@ public class ObjectSpawner : MonoBehaviour
 
     private void Update()
     {
-        if(QuestionManager.Instance.isQuestionnaireFinished)
+        if(isStudyFinished)
         {
-            isComparison = false;
-            isEvaluation = false;
-
-            Destroy(Asset0);
-            Destroy(Asset1);
-
             BlueBase.transform.position = Vector3.Lerp(
-                BlueBase.transform.position,
-                new Vector3(BlueBase.transform.position.x, 0f, BlueBase.transform.position.z),
-                Time.deltaTime
-                );
+            BlueBase.transform.position,
+            new Vector3(BlueBase.transform.position.x, 0f, BlueBase.transform.position.z),
+            Time.deltaTime
+            );
 
             BlueBase.GetComponent<MeshRenderer>().material.color = Color.Lerp(
                  BlueBase.GetComponent<MeshRenderer>().material.color,
@@ -296,5 +292,19 @@ public class ObjectSpawner : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public void OnStudyFinished()
+    {
+        isStudyFinished = true;
+
+        isComparison = false;
+        isEvaluation = false;
+
+        Destroy(Asset0);
+        Destroy(Asset1);
+
+        Asset0rid = "";
+        Asset1rid = "";
     }
 }

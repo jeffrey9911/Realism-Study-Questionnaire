@@ -37,6 +37,8 @@ public class QSComponent : MonoBehaviour
         Slider.minValue = min;
         Slider.maxValue = max;
 
+        Slider.value = Mathf.CeilToInt((min + max) / 2f);
+
         LeftText.text = left;
         RightText.text = right;
     }

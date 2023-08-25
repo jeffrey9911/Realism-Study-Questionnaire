@@ -21,6 +21,9 @@ public class UserController : MonoBehaviour
             Destroy(this);
             return;
         }
+
+        OVRManager.display.displayFrequency = 120.0f;
+        OVRPlugin.systemDisplayFrequency = 120.0f;
     }
 
     // Update is called once per frame

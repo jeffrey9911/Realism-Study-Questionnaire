@@ -23,7 +23,7 @@ public class QuestionManager : MonoBehaviour
     private GameObject advSlider; // advanced slider
     private GameObject advColorSlider; // advanced color slider
 
-    public bool isQuestionnaireFinished = false;
+    //public bool isQuestionnaireFinished = false;
 
     private void Awake()
     {
@@ -54,6 +54,7 @@ public class QuestionManager : MonoBehaviour
         QuestionnaireCount = DataManager.Instance.QuestionTable.LocalTable.itable.Count;
 
         CurrentStudy = "PreStudy";
+        CurrentQuestionIndex = 0;
         UIManager.Instance.UISystemMessage($"[System]: {PreStudyQuestionCount + PostStudyQuestionCount + QuestionnaireCount} Questions Loaded!");
 
         UIManager.Instance.OnQuestionLoaded();
@@ -82,8 +83,9 @@ public class QuestionManager : MonoBehaviour
             case "PostStudy":
                 if(CurrentQuestionIndex >= PostStudyQuestionCount)
                 {
-                    isQuestionnaireFinished = true;
-                    UIManager.Instance.UISystemMessage("[System]: Survey Finished!");
+                    //isQuestionnaireFinished = true;
+                    ObjectSpawner.Instance.OnStudyFinished();
+                    UIManager.Instance.UISystemMessage("[System]: Survey Finished! Click Restart to submit another response!");
                     UIManager.Instance.FinishPanel.SetActive(true);
                     DataRecorder.Instance.UploadRecords();
                     return;
@@ -163,7 +165,7 @@ public class QuestionManager : MonoBehaviour
                     QSComponent qsComponent = godSpeedSlider.GetComponent<QSComponent>();
                     qsComponent.StudyType = CurrentStudy;
                     qsComponent.QuestionID = CurrentQuestionIndex.ToString();
-                    qsComponent.SetSlider(0, 5, godSpeedConfigs[0], godSpeedConfigs[1]);
+                    qsComponent.SetSlider(1, 5, godSpeedConfigs[0], godSpeedConfigs[1]);
 
                     CurrentQuestionIndex++;
 

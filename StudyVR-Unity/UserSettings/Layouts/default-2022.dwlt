@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 3072
     height: 1636.8
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: Hierarchy
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 70373
+  controlID: 112
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 70226
+  controlID: 17
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -165,8 +165,8 @@ MonoBehaviour:
     y: 0
     width: 559.2
     height: 1026.4
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -249,7 +249,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 70385
+  controlID: 113
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -627,7 +627,7 @@ MonoBehaviour:
       floating: 1
       collapsed: 0
       displayed: 1
-      snapOffset: {x: 1106, y: 944.6001}
+      snapOffset: {x: 1586, y: 1412.6001}
       snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
       id: UnityEditor.SceneViewCameraOverlay
@@ -646,9 +646,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 30.095772, y: 4.0319657, z: 50.68998}
+    m_Target: {x: 1.8391411, y: 2.0852132, z: -4.748693}
     speed: 2
-    m_Value: {x: 30.095772, y: 4.0319657, z: 50.68998}
+    m_Value: {x: 1.8391411, y: 2.0852132, z: -4.748693}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -694,13 +694,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.009323714, y: 0.24089429, z: 0.002291763, w: 0.9704593}
+    m_Target: {x: -0.0066297855, y: -0.47077036, z: -0.0035085892, w: 0.8822427}
     speed: 2
-    m_Value: {x: -0.00932067, y: 0.2423602, z: 0.002305846, w: 0.97013885}
+    m_Value: {x: -0.007952991, y: -0.47075677, z: -0.0042147073, w: 0.88221717}
   m_Size:
-    m_Target: 39.42414
+    m_Target: 1.6457046
     speed: 2
-    m_Value: 41.281822
+    m_Value: 1.6457046
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -764,21 +764,21 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: ac7cfcfff87cfcff3489fcffe0fcfcff2cfdfcff5c09fdff6041fdffaa41fdffde4dfdff785ffdffc25ffdff726cfdff3eeafdffd0f3fdff324dfeffa2eafeffaeeafeff0cebfeff54ebfeff1aecfeff1eecfeffd2f0feff600affffae30ffff523cffffc67affff387effff5480ffff7280ffff609effffd8a5ffffb8bcffffb0bfffffc6c1ffffd4c5ffff24cbffff26fbffff146c0000666d00005ead00004aae00008cb2000078b3000086b50000aeba00009abb0000a8bd0000d8c20000c4c30000ecc30000e0c50000c4140100ac160100ce170100ac6c0100f86d01003086010030890100dad90100
+      m_ExpandedIDs: 08f0feff54f0feffc4fcfeff1ecdffff6ccdffff1adaffff26fbffffc62f01004432010050320100
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Library_08
-        m_OriginalName: Library_08
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -70948
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 7}
       m_SearchString: 
@@ -833,7 +833,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/_Creepy_Cat/_3D_Office/_Textures
+    - Assets/Mini Toon Office
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -841,16 +841,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/_Creepy_Cat/_3D_Office/_Textures
+  - Assets/Mini Toon Office
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\LocalRepo\Realism-Study-Questionnaire\StudyVR-Unity
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 24.599976}
-    m_SelectedIDs: 6cf10000
-    m_LastClickedID: 61804
-    m_ExpandedIDs: 00000000fea4000000a5000002a5000004a5000006a5000008a500005cf1000060f1000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 95}
+    m_SelectedIDs: f0a70000
+    m_LastClickedID: 42992
+    m_ExpandedIDs: 00000000cea70000d0a70000d2a70000d4a70000d6a70000d8a70000e0a70000f8a7000030a800009c1c0100a01c0100901d0100941d0100981d010000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -878,7 +878,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000fea4000000a5000002a5000004a5000006a5000008a5000000ca9a3bffffff7f
+    m_ExpandedIDs: 00000000cea70000d0a70000d2a70000d4a70000d6a70000d8a70000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -905,22 +905,22 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c62300000e8f000090320100e83101001e75000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: Pink Sunset 2 Equirect
+      m_OriginalName: Pink Sunset 2 Equirect
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 73746
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 8}
     m_CreateAssetUtility:

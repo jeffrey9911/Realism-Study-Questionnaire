@@ -23,6 +23,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] public TMP_Text Question;
 
     [SerializeField] public GameObject FinishPanel;
+    [SerializeField] public GameObject ClosePanel;
+
+    [SerializeField] private GameObject TutorialPanel;
 
     [SerializeField] private Transform FollowTransform;
 
@@ -33,13 +36,20 @@ public class UIManager : MonoBehaviour
     private bool IsQuestionPanelTransformed = false;
     private float FollowSpeed = 3f;
 
-    private Vector3 ControllerPosRecord = new Vector3(0f, 0f, 0f);
-    private Quaternion ControllerRotRecord = new Quaternion(0f, 0f, 0f, 0f);
+    private Vector3 LControllerPosRecord = new Vector3(0f, 0f, 0f);
+    private Vector3 RControllerPosRecord = new Vector3(0f, 0f, 0f);
+    //private Quaternion ControllerRotRecord = new Quaternion(0f, 0f, 0f, 0f);
     private bool IsControllerPosRecorded = false;
+    private Vector3 FollowUIScale = new Vector3(0.0035f, 0.0035f, 0.0035f);
+    private bool isDisplayGUI = true;
 
     [SerializeField] private Transform LeftHandAnchor;
+    [SerializeField] private Transform RightHandAnchor;
     [SerializeField] private Transform CentreEye;
     [SerializeField] private GameObject MovePanel;
+    [SerializeField] private GameObject ScalePanel;
+
+    
 
     private void Awake()
     {
@@ -63,42 +73,57 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if (QuestionManager.Instance.isQuestionnaireFinished)
-        {
-            IsUiFollowing = false;
-
-            Vector3 homePos = new Vector3(0f, 1.8f, 2.5f);
-            Vector3 homeRot = new Vector3(0f, 0f, 0f);
-            Vector3 homeSca = new Vector3(0.01f, 0.01f, 0.01f);
-
-            GameUICanvas.transform.position = Vector3.Lerp(GameUICanvas.transform.position, homePos, Time.deltaTime);
-            GameUICanvas.transform.rotation = Quaternion.Lerp(GameUICanvas.transform.rotation, Quaternion.Euler(homeRot), Time.deltaTime);
-            GameUICanvas.transform.localScale = Vector3.Lerp(GameUICanvas.transform.localScale, homeSca, Time.deltaTime);
-        }
-
         if(IsUiFollowing)
         {
-            if (OVRInput.GetDown(OVRInput.Button.Start)) GameUICanvas.SetActive(!GameUICanvas.activeSelf);
-
-            if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger))
+            if (OVRInput.GetDown(OVRInput.Button.Start))
             {
-                if(!IsControllerPosRecorded)
+                isDisplayGUI = !isDisplayGUI;
+                TutorialPanel.SetActive(isDisplayGUI);
+                GameUICanvas.SetActive(isDisplayGUI);
+                
+            }
+
+            bool isLeftHandTrigger = OVRInput.Get(OVRInput.Button.PrimaryHandTrigger);
+            bool isRightHandTrigger = OVRInput.Get(OVRInput.Button.SecondaryHandTrigger);
+
+            if (isLeftHandTrigger || isRightHandTrigger)
+            {
+                MovePanel.SetActive(true);
+                ScalePanel.SetActive(false);
+
+                if (!IsControllerPosRecorded)
                 {
-                    ControllerPosRecord = LeftHandAnchor.position;
+                    LControllerPosRecord = LeftHandAnchor.position;
+                    RControllerPosRecord = RightHandAnchor.position;
                     IsControllerPosRecorded = true;
                 }
 
-                Vector3 controllerDPos = LeftHandAnchor.position - ControllerPosRecord;
+                if(isLeftHandTrigger && isRightHandTrigger)
+                {
+                    MovePanel.SetActive(false);
+                    ScalePanel.SetActive(true);
 
-                FollowTransform.position += controllerDPos;
+                    float dDistance = Vector3.Distance(LeftHandAnchor.position, RightHandAnchor.position) - Vector3.Distance(LControllerPosRecord, RControllerPosRecord);
+                    dDistance *= 0.006f;
 
-                ControllerPosRecord = LeftHandAnchor.position;
+                    FollowUIScale += new Vector3(dDistance, dDistance, dDistance);
+                }
+                else if(isLeftHandTrigger)
+                {
+                    FollowTransform.position += LeftHandAnchor.position - LControllerPosRecord;
+                }
+                else if (isRightHandTrigger)
+                {
+                    FollowTransform.position += RightHandAnchor.position - RControllerPosRecord;
+                }
 
-                MovePanel.SetActive(true);
+                LControllerPosRecord = LeftHandAnchor.position;
+                RControllerPosRecord = RightHandAnchor.position;
             }
             else
             {
                 MovePanel.SetActive(false);
+                ScalePanel.SetActive(false);
                 IsControllerPosRecorded = false;
             }
 
@@ -108,7 +133,7 @@ public class UIManager : MonoBehaviour
 
             GameUICanvas.transform.position = Vector3.Lerp(GameUICanvas.transform.position, FollowTransform.position, Time.deltaTime * FollowSpeed);
             GameUICanvas.transform.rotation = Quaternion.Lerp(GameUICanvas.transform.rotation, FollowTransform.rotation, Time.deltaTime * FollowSpeed);
-            GameUICanvas.transform.localScale = Vector3.Lerp(GameUICanvas.transform.localScale, new Vector3(0.0035f, 0.0035f, 0.0035f), Time.deltaTime * FollowSpeed);
+            GameUICanvas.transform.localScale = Vector3.Lerp(GameUICanvas.transform.localScale, FollowUIScale, Time.deltaTime * FollowSpeed);
 
             if (!IsQuestionPanelTransformed)
             {
@@ -229,6 +254,8 @@ public class UIManager : MonoBehaviour
         IsUiFollowing = true;
 
         SurveyConfigPanel.SetActive(false);
+        FinishPanel.SetActive(false);
+        ClosePanel.SetActive(false);
         QuestionPanel.SetActive(true);
 
         ObjectManager.Instance.StartPreload();
@@ -241,6 +268,14 @@ public class UIManager : MonoBehaviour
         QuestionManager.Instance.RecordCurrentQuestion();
         QuestionManager.Instance.CurrentQuestionIndex++;
         QuestionManager.Instance.LoadQuestion();
+    }
+
+    [ContextMenu("Restart Study")]
+    public void RestartOnClick()
+    {
+        DataRecorder.Instance.ClearRecord();
+        QuestionManager.Instance.OnQuestionLoaded();
+        ObjectSpawner.Instance.isStudyFinished = false;
     }
 
     public void UISystemMessage(string message)

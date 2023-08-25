@@ -84,8 +84,7 @@ public class DataManager : MonoBehaviour
 
                         if(forceSetup == -2)
                         {
-                            UIManager.Instance.FinishPanel.SetActive(true);
-                            QuestionManager.Instance.isQuestionnaireFinished = true;
+                            UIManager.Instance.ClosePanel.SetActive(true);
                             UIManager.Instance.UISystemMessage("[System]: Survey temporarily closed. Please await further notice.");
                             return;
                         }

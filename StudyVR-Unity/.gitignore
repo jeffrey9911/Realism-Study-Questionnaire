@@ -75,3 +75,6 @@ crashlytics-build.properties
 # i Mesh Sequence
 /Assets/Resources/IMeshSequence/
 /Assets/Resources/IMeshSequence/*.meta
+
+/Assets/Resources/CCAnimation/
+/Assets/Resources/CCAnimation/*.meta

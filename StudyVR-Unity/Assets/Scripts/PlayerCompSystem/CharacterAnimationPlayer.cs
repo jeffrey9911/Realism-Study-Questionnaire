@@ -1,52 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class MeshSequencePlayer : MonoBehaviour
+public class CharacterAnimationPlayer : MonoBehaviour
 {
     public Vector3 PositionOffset = Vector3.zero;
     public Vector3 RotationOffset = Vector3.zero;
     public Vector3 ScaleOffset = Vector3.one;
 
-    public float PlayerFramePerSecond = 30;
+    public bool isOverrideFPS = false;
+    [SerializeField][HideInInspector] public float PlayerFramePerSecond = 60;
+
+    private Animator animator;
+    private AnimationClip animationClip;
 
     public bool isPlaying = false;
-
-    private int CurrentFrame = 0;
-
-    private float FrameTimer = 0;
-
-    private MeshSequenceContainer meshSequenceContainer;
-    private MeshRenderer meshRenderer;
-    private MeshFilter meshFilter;
 
     public bool isPlayingAudio = false;
     [SerializeField][HideInInspector] public AudioClip PlayerAudio;
     private AudioSource PlayerAudioSource;
 
+    private int CurrentFrame = 0;
     private int FrameCount = 0;
-
+    private float FrameTimer = 0;
 
     private void Awake()
     {
-        foreach (Transform child in this.transform)
-        {
-            child.gameObject.SetActive(false);
-        }
+        animator = this.GetComponent<Animator>();
 
-        meshSequenceContainer = this.GetComponent<MeshSequenceContainer>();
-
-        if (meshSequenceContainer == null)
+        if (animator == null)
         {
-            Debug.LogError("Please load mesh sequence first!");
+            Debug.LogError("Please setup animation first!");
             isPlaying = false;
             return;
         }
-
-        meshRenderer = this.AddComponent<MeshRenderer>();
-        meshFilter = this.AddComponent<MeshFilter>();
-        FrameCount = meshSequenceContainer.MeshSequence.Count;
 
         if (isPlayingAudio)
         {
@@ -55,38 +42,56 @@ public class MeshSequencePlayer : MonoBehaviour
                 PlayerAudioSource = this.gameObject.AddComponent<AudioSource>();
                 PlayerAudioSource.clip = PlayerAudio;
                 PlayerAudioSource.loop = true;
-                PlayerFramePerSecond = meshSequenceContainer.MeshSequence.Count / PlayerAudio.length;
+                PlayerAudioSource.spatialBlend = 1f;
+                PlayerAudioSource.rolloffMode = AudioRolloffMode.Linear;
+                PlayerAudioSource.maxDistance = 10f;
+                PlayerFramePerSecond = FrameCount / PlayerAudio.length;
+            }
+            else
+            {
+                Debug.LogError("Please setup audio first!");
+                isPlayingAudio = false;
             }
         }
+
+        if(!isPlaying)
+        {
+            animator.speed = 0f;
+        }
+        
     }
 
     private void Start()
     {
-        if (meshSequenceContainer != null)
+        if(animator != null)
         {
             this.transform.position += PositionOffset;
             this.transform.eulerAngles += RotationOffset;
             this.transform.localScale = ScaleOffset;
-        }
 
-        if (isPlayingAudio)
-        {
-            PlayerAudioSource.Play();
+            animationClip = animator.GetCurrentAnimatorClipInfo(0)[0].clip;
+            FrameCount = Mathf.CeilToInt(animationClip.length * animationClip.frameRate);
+            
+            if(isPlayingAudio)
+            {
+                animator.speed = 0.01f;
+                PlayerAudioSource.Play();
+            }
         }
     }
 
     private void Update()
     {
-        if (isPlaying)
+        if(isPlaying)
         {
-            if (isPlayingAudio)
+            if(isPlayingAudio)
             {
                 if (Mathf.FloorToInt(PlayerAudioSource.time / PlayerAudio.length * (FrameCount - 1)) != CurrentFrame)
                 {
                     SwapFrame();
                 }
             }
-            else
+            else if(isOverrideFPS)
             {
                 FrameTimer += Time.deltaTime;
 
@@ -96,20 +101,9 @@ public class MeshSequencePlayer : MonoBehaviour
                     FrameTimer = 0;
                 }
             }
-
-        }
-        else
-        {
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                SwapFrame();
-            }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                SwapFrame(true);
-            }
         }
     }
+
 
     private void SwapFrame(bool isReversing = false)
     {
@@ -123,11 +117,13 @@ public class MeshSequencePlayer : MonoBehaviour
             NextFrame = (CurrentFrame + 1) >= FrameCount ? 0 : CurrentFrame + 1;
         }
 
-        meshFilter.mesh = meshSequenceContainer.MeshSequence[NextFrame];
-        meshRenderer.sharedMaterial = meshSequenceContainer.MeshRendererSequence[NextFrame].sharedMaterial;
+        animator.Play(animationClip.name, 0, (float)NextFrame / (float)FrameCount);
 
         CurrentFrame = NextFrame;
+
+        Debug.Log("Current Frame: " + (float)NextFrame / (float)FrameCount);
     }
+
 
     [ContextMenu("Apply Player Transform Offset")]
     public void ApplyOffset()
@@ -138,4 +134,5 @@ public class MeshSequencePlayer : MonoBehaviour
 
         Debug.Log("Offset Applied");
     }
+
 }

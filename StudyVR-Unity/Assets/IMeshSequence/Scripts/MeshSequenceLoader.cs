@@ -71,6 +71,10 @@ public class MeshSequenceLoader : MonoBehaviour
         exampleObj.name = "Example Mesh for modify offset";
 
         Debug.Log("Mesh Sequence Loaded!");
+
+        this.gameObject.AddComponent<MeshSequencePlayer>();
+
+        DestroyImmediate(this.gameObject.GetComponent<MeshSequenceLoader>());
 #endif
     }
 

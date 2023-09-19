@@ -56,6 +56,10 @@ public class MeshSequencePlayer : MonoBehaviour
                 PlayerAudioSource.clip = PlayerAudio;
                 PlayerAudioSource.loop = true;
                 PlayerFramePerSecond = meshSequenceContainer.MeshSequence.Count / PlayerAudio.length;
+
+                PlayerAudioSource.spatialBlend = 1f;
+                PlayerAudioSource.rolloffMode = AudioRolloffMode.Linear;
+                PlayerAudioSource.maxDistance = 2.5f;
             }
         }
     }
@@ -89,7 +93,7 @@ public class MeshSequencePlayer : MonoBehaviour
             else
             {
                 FrameTimer += Time.deltaTime;
-
+                Debug.Log(FrameTimer);
                 if (FrameTimer >= 1f / PlayerFramePerSecond)
                 {
                     SwapFrame();

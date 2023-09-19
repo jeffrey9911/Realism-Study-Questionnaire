@@ -83,6 +83,7 @@ public class UIManager : MonoBehaviour
                 
             }
 
+
             bool isLeftHandTrigger = OVRInput.Get(OVRInput.Button.PrimaryHandTrigger);
             bool isRightHandTrigger = OVRInput.Get(OVRInput.Button.SecondaryHandTrigger);
 

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using Unity.VisualScripting;
@@ -215,7 +215,7 @@ public class ObjectSpawner : MonoBehaviour
 
             Asset0rid = objrid;
             
-            UserController.Instance.IsResetUser = true;
+            UserController.Instance.ResetUser(1);
 
             StartCoroutine(ObjectManager.Instance.GetObject(objrid, 
                 (gobj) =>
@@ -240,7 +240,7 @@ public class ObjectSpawner : MonoBehaviour
 
             Asset0rid = obj0rid;
 
-            UserController.Instance.IsResetUser = true;
+            UserController.Instance.ResetUser(2);
 
             StartCoroutine(ObjectManager.Instance.GetObject(obj0rid,
                 (gobj) =>

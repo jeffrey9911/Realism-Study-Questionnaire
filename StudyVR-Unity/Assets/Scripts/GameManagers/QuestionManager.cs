@@ -165,7 +165,7 @@ public class QuestionManager : MonoBehaviour
                     QSComponent qsComponent = godSpeedSlider.GetComponent<QSComponent>();
                     qsComponent.StudyType = CurrentStudy;
                     qsComponent.QuestionID = CurrentQuestionIndex.ToString();
-                    qsComponent.SetSlider(1, 5, godSpeedConfigs[0], godSpeedConfigs[1]);
+                    qsComponent.SetSlider(-2, 2, godSpeedConfigs[0], godSpeedConfigs[1]);
 
                     CurrentQuestionIndex++;
 

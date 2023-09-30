@@ -437,7 +437,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 72377385}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0.194}
+  m_LocalPosition: {x: 0, y: 0, z: -1.459}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2271,9 +2271,9 @@ RectTransform:
   m_LocalScale: {x: 0.010000002, y: 0.009999999, z: 0.009999999}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1104033938}
-  - {fileID: 1764116437}
   - {fileID: 1431530233}
+  - {fileID: 1764116437}
+  - {fileID: 1104033938}
   m_Father: {fileID: 1922188232097995273}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: -90, y: 180, z: 0}
@@ -2753,7 +2753,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 575664379}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.9, y: 0.57, z: 11.859}
+  m_LocalPosition: {x: -8.9, y: 0.514, z: 11.859}
   m_LocalScale: {x: 0.73300344, y: 0.73300344, z: 0.73300344}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12867,7 +12867,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5, y: 2, z: 0.5}
+  m_Size: {x: 1, y: 2.2, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &1972827014489064776
 Transform:
@@ -12877,7 +12877,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1165081119718776818}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4, y: 0.1, z: 4}
+  m_LocalPosition: {x: 2.5, y: 0.1, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12909,7 +12909,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1165081120924397314}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4, y: 0.1, z: 4}
+  m_LocalPosition: {x: -2.5, y: 0.1, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12961,7 +12961,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.0280004, y: 0.5, z: 4.0280004}
+  m_Size: {x: 4.0280004, y: 1, z: 4.0280004}
   m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!33 &3228861180284324589
 MeshFilter:
@@ -13007,7 +13007,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.0280004, y: 0.5, z: 4.0280004}
+  m_Size: {x: 4.0280004, y: 1, z: 4.0280004}
   m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!33 &3228861180663769217
 MeshFilter:
@@ -13053,7 +13053,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.0280004, y: 0.5, z: 4.0280004}
+  m_Size: {x: 4.0280004, y: 1, z: 4.0280004}
   m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!4 &5840206541880987184 stripped
 Transform:

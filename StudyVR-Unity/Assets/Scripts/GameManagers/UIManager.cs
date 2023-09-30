@@ -80,7 +80,11 @@ public class UIManager : MonoBehaviour
                 isDisplayGUI = !isDisplayGUI;
                 TutorialPanel.SetActive(isDisplayGUI);
                 GameUICanvas.SetActive(isDisplayGUI);
-                
+            }
+
+            if(Input.GetKeyDown(KeyCode.Tab))
+            {
+                NextQuestionOnClick();
             }
 
 
@@ -201,8 +205,8 @@ public class UIManager : MonoBehaviour
 
         UISystemMessage("[System]: Survey Versions Loaded!");
 
-        DataRecorder.Instance.SurveyVersion = "1";
-        StartSurveyOnClick();
+        //DataRecorder.Instance.SurveyVersion = "1";
+        //StartSurveyOnClick();
     }
 
     public void StartSurveyOnClick()

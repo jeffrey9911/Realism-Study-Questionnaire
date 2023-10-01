@@ -13,7 +13,7 @@ Introducing [**StudyVR**](https://github.com/jeffrey9911/Realism-Study-Questionn
 ## Setup
 ### [Airtable](https://airtable.com/)
 - Create your own database on Airtable
-- Create the tables as below (click [here](https://airtable.com/appimVWqb8ESstAmk/shr7r7fv417jCg3vM) to see an example):
+- Create the tables as below (click [here](https://airtable.com/appHif7FZLaXw63IB/shrhcdmn89mHBN5qZ) to see and clone the provided sample as a quick option):
 
 ```
 UnityAssetBundle List

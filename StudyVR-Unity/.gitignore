@@ -65,7 +65,7 @@ crashlytics-build.properties
 /Assets/Oculus/
 
 # API Key
-#/Assets/EnvKey.*
+/Assets/EnvKey.*
 
 # Asset bundles
 /Assets/GeneratedAssetBundles/

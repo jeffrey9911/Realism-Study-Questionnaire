@@ -24,9 +24,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] public GameObject FinishPanel;
     [SerializeField] public GameObject ClosePanel;
-
-    [SerializeField] private GameObject TutorialPanel;
-
+    
     [SerializeField] private Transform FollowTransform;
 
     public GameObject QuestionContainer;
@@ -78,7 +76,6 @@ public class UIManager : MonoBehaviour
             if (OVRInput.GetDown(OVRInput.Button.Start))
             {
                 isDisplayGUI = !isDisplayGUI;
-                TutorialPanel.SetActive(isDisplayGUI);
                 GameUICanvas.SetActive(isDisplayGUI);
             }
 
@@ -256,7 +253,8 @@ public class UIManager : MonoBehaviour
 
     public void OnQuestionLoaded()
     {
-        IsUiFollowing = true;
+        //IsUiFollowing = true;
+        TutorialManager.Instance.StartTutorial();
 
         SurveyConfigPanel.SetActive(false);
         FinishPanel.SetActive(false);
@@ -296,6 +294,20 @@ public class UIManager : MonoBehaviour
     private void OnSurveyVersionDDValue(int index)
     {
         DataRecorder.Instance.SurveyVersion = SurveyVersionDropdown.options[index].text;
+    }
+
+    public void SwitchToTutorial(bool isTutorial)
+    {
+        if(isTutorial)
+        {
+            GameUICanvas.SetActive(false);
+            IsUiFollowing = false;
+        }
+        else
+        {
+            GameUICanvas.SetActive(true);
+            IsUiFollowing = true;
+        }
     }
 }
 

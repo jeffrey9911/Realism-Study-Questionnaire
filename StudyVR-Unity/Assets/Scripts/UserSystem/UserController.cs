@@ -36,6 +36,11 @@ public class UserController : MonoBehaviour
     void Update()
     {
         if (IsResetUser) ResetingUser();
+
+        if(OVRInput.GetDown(OVRInput.Button.Two))
+        {
+            OVRManager.display.RecenterPose();
+        }
     }
 
     public void ResetUser(int NumObj)

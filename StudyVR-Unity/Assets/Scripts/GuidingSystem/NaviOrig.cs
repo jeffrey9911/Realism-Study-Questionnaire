@@ -1,4 +1,3 @@
-using Oculus.Voice.Demo;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;

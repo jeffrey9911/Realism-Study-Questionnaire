@@ -47,6 +47,8 @@ public class UserController : MonoBehaviour
     {
         IsResetUser = true;
 
+        UIManager.Instance.ResetQuestionPanel();
+
         switch (NumObj)
         {
             case 1:

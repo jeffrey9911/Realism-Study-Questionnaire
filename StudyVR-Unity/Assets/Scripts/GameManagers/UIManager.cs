@@ -309,5 +309,10 @@ public class UIManager : MonoBehaviour
             IsUiFollowing = true;
         }
     }
+
+    public void ResetQuestionPanel()
+    {
+        FollowTransform.localPosition = new Vector3(0f, -0.6f, 0.5f);
+    }
 }
 

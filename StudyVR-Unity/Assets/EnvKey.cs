@@ -6,13 +6,13 @@ public static class EnvKey
 {
     // Airtable
     public static string APIVERSION { get { return "v0"; } }
-    public static string APPTOKEN { get { return "replace by yout table token here)"; } } // Table token can be found in your Airtable Database url, starting with "app"
-    public static string APIKEY { get { return "Replace by your Airtable Api key"; } } // Api key can be found in your Airtable Developer hub
+    public static string APPTOKEN { get { return "apptpwKwOEJtQypv7"; } }
+    public static string APIKEY { get { return "keyBWmSRLypBsJUvo"; } }
 
 
     // Google Drive
-    public static string GOOGLE_APIKEY { get { return "Replace by your google drive Api key"; } }
-    
+    public static string GOOGLE_APIKEY { get { return "AIzaSyDdfTzQOOQ_Vr4yHTWFliSpVTm3ZRC03PE"; } } 
+
 
     // Airtable Table Names
     public static class Tables

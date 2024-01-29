@@ -5,9 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainScene.unity
     guid: 210a83d19cc4eb3419e90fe1c305284e
+  - enabled: 1
+    path: Assets/TLab/TLabWebViewVR/OculusIntegration/Scenes/TLabWebViewVR.unity
+    guid: 4b7eb4c46a9c51446ba14f1a05b2ae4d
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 609e11d4aca243f499a077204256a1a8, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: f5d669d1d7dd43048b945a0bb9b32d89, type: 2}
